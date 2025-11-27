@@ -49,6 +49,11 @@
             transition: transform 0.3s, box-shadow 0.3s;
             cursor: pointer;
             border: 3px solid transparent;
+            text-decoration: none; /* Agar link tidak bergaris bawah */
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .card:hover {
@@ -72,22 +77,38 @@
         .card-desc {
             color: #636e72;
             font-size: 0.9em;
+            margin-bottom: 20px;
+            flex-grow: 1;
         }
 
         .btn-start {
             display: inline-block;
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #0984e3;
+            padding: 10px 25px;
             color: white;
-            text-decoration: none;
             border-radius: 50px;
             font-weight: bold;
             transition: background 0.3s;
+            margin-top: auto;
         }
 
-        .btn-start:hover {
-            background-color: #74b9ff;
+        /* Warna Tombol */
+        .btn-pancasila { background-color: #0984e3; }
+        .btn-pancasila:hover { background-color: #74b9ff; }
+
+        .btn-ipas { background-color: #27ae60; }
+        .btn-ipas:hover { background-color: #2ecc71; }
+
+        .btn-disabled { background-color: #b2bec3; cursor: not-allowed; }
+
+        /* Card Disabled Style */
+        .card-disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        .card-disabled:hover {
+            transform: none;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border-color: transparent;
         }
 
         footer {
@@ -104,28 +125,31 @@
     <div class="subtitle">SD DILARAF ISLAMIC SCHOOL - Kelas 4</div>
 
     <div class="card-container">
-        <!-- Kartu Pendidikan Pancasila -->
-        <div class="card" onclick="window.location.href='pancasila.html'">
+        
+        <!-- Kartu Pendidikan Pancasila (AKTIF) -->
+        <a href="pancasila.html" class="card">
             <div class="card-icon">🇮🇩</div>
-            <div class="card-title">Pendidikan Pancasila</div>
+            <div class="card-title">Pancasila</div>
             <div class="card-desc">Belajar tentang Hak, Kewajiban, dan Cinta Tanah Air.</div>
-            <a href="pancasila.html" class="btn-start">Mulai Latihan!</a>
-        </div>
+            <span class="btn-start btn-pancasila">Mulai Latihan!</span>
+        </a>
 
-        <!-- Kartu Placeholder untuk Mapel Lain -->
-        <div class="card" style="opacity: 0.6; cursor: not-allowed;">
+        <!-- Kartu IPAS (SEKARANG AKTIF) -->
+        <a href="ipas.html" class="card">
+            <div class="card-icon">🌿</div>
+            <div class="card-title">IPAS</div>
+            <div class="card-desc">Belajar tentang Alam, Peta, dan Iklim.</div>
+            <span class="btn-start btn-ipas">Mulai Latihan!</span>
+        </a>
+
+        <!-- Kartu Matematika (MASIH MENUNGGU) -->
+        <div class="card card-disabled">
             <div class="card-icon">➗</div>
             <div class="card-title">Matematika</div>
             <div class="card-desc">Segera Hadir!</div>
-            <span class="btn-start" style="background-color: #ccc;">Tunggu Ya</span>
+            <span class="btn-start btn-disabled">Tunggu Ya</span>
         </div>
 
-        <div class="card" style="opacity: 0.6; cursor: not-allowed;">
-            <div class="card-icon">🌿</div>
-            <div class="card-title">IPAS</div>
-            <div class="card-desc">Segera Hadir!</div>
-            <span class="btn-start" style="background-color: #ccc;">Tunggu Ya</span>
-        </div>
     </div>
 
     <footer>
