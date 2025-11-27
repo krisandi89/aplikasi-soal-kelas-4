@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lembar Ujian Pancasila Kelas 4</title>
+    <style>
+        :root {
+            --primary: #0984e3;
+            --secondary: #6c5ce7;
+            --bg-color: #f0f8ff;
+            --card-bg: #ffffff;
+            --text: #2d3436;
+            --border: #dfe6e9;
+            --success: #00b894;
+            --error: #ff7675;
+            --warning: #ffeaa7;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            color: var(--text);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: var(--primary);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-bottom: 5px solid #74b9ff;
+        }
+
+        .header h1 { margin: 0; font-size: 1.8em; }
+        .header p { margin: 10px 0 0; opacity: 0.9; }
+
+        .question-list {
+            padding: 30px;
+        }
+
+        .question-item {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px dashed var(--border);
+        }
+
+        .q-number {
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .q-text {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        /* Styles for Options */
+        .options-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .radio-label, .checkbox-label {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .radio-label:hover, .checkbox-label:hover {
+            background: #e3f2fd;
+            border-color: var(--primary);
+        }
+
+        input[type="radio"], input[type="checkbox"] {
+            margin-right: 12px;
+            transform: scale(1.2);
+        }
+
+        /* Styles for Text Inputs */
+        .input-text, .input-area {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #b2bec3;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+        
+        .input-area { min-height: 80px; resize: vertical; }
+
+        .input-text:focus, .input-area:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: #f0f8ff;
+        }
+
+        /* Result & Feedback Box */
+        .feedback-box {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none; /* Hidden initially */
+            background-color: #f1f2f6;
+            border-left: 5px solid #ccc;
+        }
+
+        .feedback-box.correct {
+            background-color: #d4edda;
+            border-left-color: var(--success);
+            color: #155724;
+        }
+
+        .feedback-box.wrong {
+            background-color: #f8d7da;
+            border-left-color: var(--error);
+            color: #721c24;
+        }
+
+        .feedback-box.manual {
+            background-color: #fff3cd;
+            border-left-color: #ffc107;
+            color: #856404;
+        }
+
+        .answer-key {
+            font-weight: bold;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .explanation {
+            font-size: 0.9em;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        /* Sticky Footer for Submit */
+        .footer-action {
+            background: #f1f2f6;
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            position: sticky;
+            bottom: 0;
+            box-shadow: 0 -5px 10px rgba(0,0,0,0.05);
+        }
+
+        .btn-submit {
+            background-color: var(--success);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .btn-submit:hover {
+            transform: scale(1.05);
+            background-color: #00a884;
+        }
+
+        .score-board {
+            text-align: center;
+            padding: 20px;
+            background: var(--secondary);
+            color: white;
+            display: none;
+            margin-bottom: 20px;
+            border-radius: 0 0 15px 15px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 10px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>📝 Ujian Pendidikan Pancasila</h1>
+            <p>Kelas 4 - SD Dilaraf Islamic School</p>
+        </div>
+
+        <div class="score-board" id="score-board">
+            <h2>Hasil Pengerjaan</h2>
+            <div style="font-size: 3em; font-weight: bold;" id="final-score">0</div>
+            <p>Nilai di atas hanya untuk soal Pilihan Ganda & Benar Salah.</p>
+            <p>Silakan periksa Isian & Uraian secara mandiri di bawah ini.</p>
+            <a href="index.html" style="color: yellow; text-decoration: underline;">Kembali ke Menu Utama</a>
+        </div>
+
+        <div class="question-list" id="question-container">
+            <!-- Soal akan di-render di sini oleh JavaScript -->
+        </div>
+
+        <div class="footer-action" id="footer-action">
+            <button class="btn-submit" onclick="submitExam()">Kumpulkan Jawaban ✅</button>
+        </div>
+    </div>
+
+    <script>
+        // Database Soal (Sama seperti sebelumnya)
+        const questions = [
+            // --- PG (1-10) ---
+            {
+                id: 1, type: 'pg',
+                text: "Setiap anak di sekolah berhak untuk mendapatkan...",
+                options: ["Uang jajan yang banyak", "Kasih sayang dan ilmu dari guru", "Bebas bermain sepanjang waktu", "Hadiah setiap hari"],
+                answer: 1, hint: "Hak utama di sekolah adalah belajar."
+            },
+            {
+                id: 2, type: 'pg',
+                text: "Salah satu kewajiban siswa di sekolah adalah...",
+                options: ["Mendapatkan nilai bagus", "Mentaati tata tertib sekolah", "Membawa mainan dari rumah", "Menyuruh teman mengerjakan PR"],
+                answer: 1, hint: "Aturan sekolah harus dipatuhi."
+            },
+            {
+                id: 3, type: 'pg',
+                text: "Negara berhak memungut pajak dari warga negara. Pajak tersebut digunakan untuk...",
+                options: ["Pembangunan fasilitas umum", "Gaji presiden saja", "Tabungan pribadi pejabat", "Membeli mainan anak-anak"],
+                answer: 0, hint: "Untuk kepentingan bersama seperti jalan raya."
+            },
+            {
+                id: 4, type: 'pg',
+                text: "Manfaat pajak akan kembali kepada masyarakat dalam bentuk...",
+                options: ["Uang tunai setiap bulan", "Fasilitas pelayanan publik", "Sembako gratis setiap hari", "Mobil mewah untuk setiap warga"],
+                answer: 1, hint: "Seperti rumah sakit dan sekolah negeri."
+            },
+            {
+                id: 5, type: 'pg',
+                text: "Mengikuti upacara bendera dengan khidmat merupakan bentuk...",
+                options: ["Hukuman dari guru", "Olahraga pagi", "Penghormatan kepada pahlawan", "Agar dipuji teman"],
+                answer: 2, hint: "Mengenang jasa pahlawan."
+            },
+            {
+                id: 6, type: 'pg',
+                text: "Wujud kesejahteraan negara dapat dirasakan jika...",
+                options: ["Semua warga negara kaya raya", "Tidak ada aturan hukum", "Masyarakat hidup aman, damai, dan makmur", "Semua orang bisa berbuat semaunya"],
+                answer: 2, hint: "Hidup tenang dan aman."
+            },
+            {
+                id: 7, type: 'pg',
+                text: "Kepanjangan dari HAM adalah...",
+                options: ["Hak Asuh Manusia", "Hak Asasi Manusia", "Hukum Amanat Manusia", "Himpunan Anak Muda"],
+                answer: 1, hint: "Hak dasar manusia."
+            },
+            {
+                id: 8, type: 'pg',
+                text: "Undang-Undang Republik Indonesia yang mengatur tentang Hak Asasi Manusia adalah...",
+                options: ["UU No. 39 Tahun 1999", "UU No. 20 Tahun 2003", "UU No. 12 Tahun 2010", "UU No. 1 Tahun 1945"],
+                answer: 0, hint: "Tahun 1999."
+            },
+            {
+                id: 9, type: 'pg',
+                text: "Sebagai siswa, cara kita ikut serta dalam upaya pembelaan negara adalah dengan...",
+                options: ["Ikut perang mengangkat senjata", "Belajar dengan rajin dan berprestasi", "Sering bolos sekolah", "Bermain game seharian"],
+                answer: 1, hint: "Tugas pelajar adalah belajar."
+            },
+            {
+                id: 10, type: 'pg',
+                text: "Pasal 27 ayat 1 UUD 1945 menyebutkan bahwa segala warga negara bersamaan kedudukannya di dalam...",
+                options: ["Kekayaan dan jabatan", "Hukum dan pemerintahan", "Pendidikan dan kebudayaan", "Ekonomi dan perdagangan"],
+                answer: 1, hint: "Sama di mata hukum."
+            },
+            
+            // --- PG KOMPLEKS (11-20) ---
+            {
+                id: 11, type: 'pg_kompleks',
+                text: "<b>Bacalah teks berikut!</b><br>Pak Budi selalu membayar pajak tepat waktu. Ia juga selalu mematuhi rambu lalu lintas saat berkendara. Namun, Pak Budi pernah lupa membawa SIM saat ada razia polisi.<br><br>Manakah pernyataan yang BENAR? (Pilih 2 jawaban)",
+                options: ["Pak Budi melaksanakan kewajiban membayar pajak", "Pak Budi melanggar aturan lalu lintas karena tidak bawa SIM", "Pak Budi tidak perlu membayar pajak", "Pak Budi adalah polisi"],
+                answer: [0, 1], hint: "Satu kebaikan (pajak), satu kesalahan (SIM)."
+            },
+            {
+                id: 12, type: 'pg_kompleks',
+                text: "Pilihlah kegiatan yang termasuk <b>Hak</b> seorang anak di rumah! (Pilih 2 jawaban)",
+                options: ["Mendapatkan makanan bergizi", "Membantu ibu mencuci piring", "Mendapat perlindungan orang tua", "Mengerjakan PR"],
+                answer: [0, 2], hint: "Sesuatu yang diterima anak."
+            },
+            {
+                id: 13, type: 'pg_kompleks',
+                text: "Pilihlah kegiatan yang termasuk <b>Kewajiban</b> warga negara! (Pilih 2 jawaban)",
+                options: ["Menggunakan fasilitas umum", "Membayar pajak", "Mematuhi peraturan lalu lintas", "Mendapatkan perlindungan hukum"],
+                answer: [1, 2], hint: "Sesuatu yang harus dilakukan untuk negara."
+            },
+            {
+                id: 14, type: 'pg_kompleks',
+                text: "Sikap yang sesuai dengan nilai Pancasila di lingkungan masyarakat adalah... (Pilih 2 jawaban)",
+                options: ["Gotong royong membersihkan selokan", "Membuang sampah di sungai", "Menjenguk tetangga yang sakit", "Memutar musik keras-keras saat malam"],
+                answer: [0, 2], hint: "Peduli sesama dan lingkungan."
+            },
+            {
+                id: 15, type: 'pg_kompleks',
+                text: "Contoh sikap menghargai keberagaman budaya adalah... (Pilih 2 jawaban)",
+                options: ["Mempelajari tarian daerah lain", "Mengejek logat bicara teman", "Menonton pertunjukan seni daerah", "Hanya mau berteman dengan satu suku saja"],
+                answer: [0, 2], hint: "Mau mengenal budaya lain."
+            },
+            {
+                id: 16, type: 'pg_kompleks',
+                text: "Manakah yang merupakan identitas nasional bangsa Indonesia? (Pilih 2 jawaban)",
+                options: ["Bendera Merah Putih", "Bahasa Inggris", "Lagu Indonesia Raya", "Mata uang Dollar"],
+                answer: [0, 2], hint: "Simbol resmi negara Indonesia."
+            },
+            {
+                id: 17, type: 'pg_kompleks',
+                text: "Tujuan nasional bangsa Indonesia tercantum dalam Pembukaan UUD 1945, yaitu... (Pilih 2 jawaban)",
+                options: ["Mencerdaskan kehidupan bangsa", "Menjajah negara lain", "Melindungi segenap bangsa Indonesia", "Menjadi negara adidaya"],
+                answer: [0, 2], hint: "Melindungi dan mencerdaskan."
+            },
+            {
+                id: 18, type: 'pg_kompleks',
+                text: "Sikap toleransi beragama dapat ditunjukkan dengan cara... (Pilih 2 jawaban)",
+                options: ["Tidak ribut saat teman sedang beribadah", "Memaksa teman mengikuti agama kita", "Menghormati perayaan hari besar agama lain", "Melarang teman berdoa"],
+                answer: [0, 2], hint: "Menghormati ibadah orang lain."
+            },
+            {
+                id: 19, type: 'pg_kompleks',
+                text: "Hak siswa dalam mengemukakan pendapat di kelas contohnya... (Pilih 2 jawaban)",
+                options: ["Bertanya kepada guru jika belum paham", "Berteriak saat guru menjelaskan", "Memberikan usul saat diskusi kelompok", "Memotong pembicaraan teman"],
+                answer: [0, 2], hint: "Sopan santun saat bicara."
+            },
+            {
+                id: 20, type: 'pg_kompleks',
+                text: "Akibat jika tidak melaksanakan kewajiban di sekolah adalah... (Pilih 2 jawaban)",
+                options: ["Suasana kelas menjadi tertib", "Mendapat teguran dari guru", "Ketinggalan pelajaran", "Disayang bapak ibu guru"],
+                answer: [1, 2], hint: "Hal buruk yang terjadi."
+            },
+
+            // --- ISIAN / MEMASANGKAN (Jadi Pilihan Ganda) (21-25) ---
+            {
+                id: 21, type: 'pg',
+                text: "Pasal 31 Ayat 1 UUD 1945 berbunyi: Setiap warga negara berhak mendapat...",
+                options: ["Pekerjaan", "Pendidikan", "Perumahan", "Makanan"],
+                answer: 1, hint: "Tentang sekolah."
+            },
+            {
+                id: 22, type: 'pg',
+                text: "Pemerintah mengusahakan dan menyelenggarakan satu sistem ... nasional.",
+                options: ["Pertahanan", "Pendidikan", "Keuangan", "Kesehatan"],
+                answer: 1, hint: "Sistem sekolah."
+            },
+            {
+                id: 23, type: 'pg',
+                text: "Pendidikan dasar itu wajib diikuti, dan pemerintah wajib...",
+                options: ["Membiayainya", "Menutupnya", "Mengabaikannya", "Menjualnya"],
+                answer: 0, hint: "Gratis alias dibiayai."
+            },
+            {
+                id: 24, type: 'pg',
+                text: "Anggaran pendidikan sekurang-kurangnya berapa persen dari APBN?",
+                options: ["10%", "20%", "50%", "100%"],
+                answer: 1, hint: "Dua puluh persen."
+            },
+            {
+                id: 25, type: 'pg',
+                text: "Pemerintah memajukan ilmu pengetahuan dan teknologi dengan menjunjung tinggi nilai-nilai...",
+                options: ["Agama", "Ekonomi", "Politik", "Asing"],
+                answer: 0, hint: "Nilai ketuhanan/agama."
+            },
+
+            // --- BENAR / SALAH (26-30) ---
+            {
+                id: 26, type: 'bs',
+                text: "Batik adalah salah satu kebudayaan nasional Indonesia yang sudah diakui dunia.",
+                answer: "Benar", hint: "Warisan budaya asli."
+            },
+            {
+                id: 27, type: 'bs',
+                text: "Kita boleh mengejek tarian daerah lain yang menurut kita aneh.",
+                answer: "Salah", hint: "Tidak boleh mengejek."
+            },
+            {
+                id: 28, type: 'bs',
+                text: "Melestarikan budaya daerah adalah kewajiban generasi muda.",
+                answer: "Benar", hint: "Agar tidak punah."
+            },
+            {
+                id: 29, type: 'bs',
+                text: "Hak dan kewajiban harus dilaksanakan secara seimbang.",
+                answer: "Benar", hint: "Seimbang itu penting."
+            },
+            {
+                id: 30, type: 'bs',
+                text: "Kita boleh meminta hak kita meskipun belum melaksanakan kewajiban.",
+                answer: "Salah", hint: "Kewajiban dulu baru hak."
+            },
+
+            // --- ISIAN SINGKAT (31-35) ---
+            {
+                id: 31, type: 'isian',
+                text: "WNI adalah singkatan dari...",
+                answer: "Warga Negara Indonesia", hint: ""
+            },
+            {
+                id: 32, type: 'isian',
+                text: "Warga negara asing yang tinggal di Indonesia sering disingkat menjadi...",
+                answer: "WNA", hint: ""
+            },
+            {
+                id: 33, type: 'isian',
+                text: "Orang yang mendiami atau tinggal di suatu wilayah negara disebut...",
+                answer: "Penduduk", hint: ""
+            },
+            {
+                id: 34, type: 'isian',
+                text: "Pasal 27 sampai Pasal 34 UUD 1945 mengatur tentang ... dan Kewajiban Warga Negara.",
+                answer: "Hak", hint: ""
+            },
+            {
+                id: 35, type: 'isian',
+                text: "Badan Penyelenggara Jaminan Sosial biasa disingkat menjadi...",
+                answer: "BPJS", hint: ""
+            },
+
+            // --- URAIAN (36-40) ---
+            {
+                id: 36, type: 'uraian',
+                text: "Sebutkan 3 contoh kewajiban warga negara Indonesia!",
+                answer: "Membayar pajak, Mematuhi hukum, Membela negara", hint: ""
+            },
+            {
+                id: 37, type: 'uraian',
+                text: "Jelaskan apa yang dimaksud dengan Warga Negara!",
+                answer: "Orang yang secara hukum diakui sebagai anggota suatu negara", hint: ""
+            },
+            {
+                id: 38, type: 'uraian',
+                text: "Jelaskan perbedaan antara Hak dan Kewajiban!",
+                answer: "Hak adalah yang kita terima, Kewajiban adalah yang kita lakukan", hint: ""
+            },
+            {
+                id: 39, type: 'uraian',
+                text: "Sebutkan 5 kewajiban kamu sebagai pelajar di sekolah!",
+                answer: "Belajar, Hormat guru, Datang tepat waktu, Pakai seragam, Jaga kebersihan", hint: ""
+            },
+            {
+                id: 40, type: 'uraian',
+                text: "Sebutkan kewajiban negara untuk warga negara! (Minimal 2)",
+                answer: "Melindungi warga, Mencerdaskan bangsa, Menyejahterakan umum", hint: ""
+            }
+        ];
+
+        const container = document.getElementById('question-container');
+
+        // 1. RENDER SOAL
+        function renderQuestions() {
+            let html = "";
+            questions.forEach((q, index) => {
+                let inputHtml = "";
+                let qNum = index + 1;
+
+                if (q.type === 'pg' || q.type === 'bs') {
+                    // Pilihan Ganda & Benar Salah (Radio Button)
+                    let options = q.type === 'bs' ? ["Benar", "Salah"] : q.options;
+                    
+                    options.forEach((opt, i) => {
+                        let val = q.type === 'bs' ? opt : i; 
+                        inputHtml += `
+                            <label class="radio-label">
+                                <input type="radio" name="q${q.id}" value="${val}">
+                                ${q.type === 'pg' ? String.fromCharCode(65+i) + '. ' : ''} ${opt}
+                            </label>
+                        `;
+                    });
+                } 
+                else if (q.type === 'pg_kompleks') {
+                    // Checkbox
+                    q.options.forEach((opt, i) => {
+                        inputHtml += `
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="q${q.id}" value="${i}">
+                                ${opt}
+                            </label>
+                        `;
+                    });
+                }
+                else if (q.type === 'isian') {
+                    // Input Text Pendek
+                    inputHtml = `<input type="text" class="input-text" name="q${q.id}" placeholder="Ketik jawabanmu..." autocomplete="off">`;
+                }
+                else if (q.type === 'uraian') {
+                    // Textarea
+                    inputHtml = `<textarea class="input-area" name="q${q.id}" placeholder="Tulis jawaban lengkapmu di sini..."></textarea>`;
+                }
+
+                html += `
+                    <div class="question-item" id="q-block-${q.id}">
+                        <span class="q-number">Soal No. ${qNum}</span>
+                        <div class="q-text">${q.text}</div>
+                        <div class="options-group">
+                            ${inputHtml}
+                        </div>
+                        <div class="feedback-box" id="feedback-${q.id}"></div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        // 2. FUNGSI SUBMIT & NILAI
+        function submitExam() {
+            let score = 0;
+            let maxScorePG = 0; // Hanya hitung skor max untuk soal yang dinilai otomatis
+            
+            questions.forEach(q => {
+                const feedbackEl = document.getElementById(`feedback-${q.id}`);
+                const blockEl = document.getElementById(`q-block-${q.id}`);
+                let isCorrect = false;
+                let userAnswer = "-";
+                
+                // --- LOGIKA PENILAIAN ---
+                
+                if (q.type === 'pg' || q.type === 'bs') {
+                    maxScorePG++;
+                    const selected = document.querySelector(`input[name="q${q.id}"]:checked`);
+                    if (selected) {
+                        userAnswer = selected.value;
+                        // Konversi value radio ke tipe data yang sesuai (int untuk PG, string untuk BS)
+                        let valToCheck = q.type === 'pg' ? parseInt(userAnswer) : userAnswer;
+                        if (valToCheck === q.answer) isCorrect = true;
+                    }
+
+                    // Tampilkan Hasil
+                    if (isCorrect) {
+                        score++;
+                        feedbackEl.className = "feedback-box correct";
+                        feedbackEl.innerHTML = `✅ <b>Jawaban Benar!</b>`;
+                    } else {
+                        feedbackEl.className = "feedback-box wrong";
+                        let correctText = "";
+                        if(q.type === 'pg') correctText = q.options[q.answer];
+                        else correctText = q.answer;
+                        
+                        feedbackEl.innerHTML = `❌ <b>Jawaban Kurang Tepat.</b><br>
+                                                <span class="answer-key">Kunci Jawaban: ${correctText}</span>
+                                                <div class="explanation">Pembahasan: ${q.hint}</div>`;
+                    }
+                } 
+                else if (q.type === 'pg_kompleks') {
+                    maxScorePG++;
+                    const checkedBoxes = document.querySelectorAll(`input[name="q${q.id}"]:checked`);
+                    let userIndices = Array.from(checkedBoxes).map(cb => parseInt(cb.value)).sort();
+                    let correctIndices = [...q.answer].sort();
+                    
+                    // Bandingkan array
+                    if (JSON.stringify(userIndices) === JSON.stringify(correctIndices)) {
+                        isCorrect = true;
+                        score++;
+                        feedbackEl.className = "feedback-box correct";
+                        feedbackEl.innerHTML = `✅ <b>Jawaban Benar!</b>`;
+                    } else {
+                        feedbackEl.className = "feedback-box wrong";
+                        let correctText = q.answer.map(idx => "• " + q.options[idx]).join("<br>");
+                        feedbackEl.innerHTML = `❌ <b>Jawaban Kurang Tepat.</b><br>
+                                                <span class="answer-key">Seharusnya memilih:</span><br>${correctText}
+                                                <div class="explanation">Hint: ${q.hint}</div>`;
+                    }
+                }
+                else if (q.type === 'isian' || q.type === 'uraian') {
+                    // KHUSUS ISIAN & URAIAN: TIDAK DINILAI OTOMATIS
+                    // Hanya tampilkan kunci jawaban
+                    const input = document.querySelector(`[name="q${q.id}"]`);
+                    userAnswer = input ? input.value : "";
+                    
+                    feedbackEl.className = "feedback-box manual";
+                    feedbackEl.innerHTML = `📝 <b>Silakan Periksa Mandiri</b><br>
+                                            Jawaban Kamu: <b>${userAnswer || "(Kosong)"}</b><br>
+                                            <span class="answer-key">Kunci Jawaban Guru: ${q.answer}</span>`;
+                }
+
+                // Munculkan kotak feedback
+                feedbackEl.style.display = "block";
+                
+                // Disable inputs setelah submit
+                const inputs = document.querySelectorAll(`[name="q${q.id}"]`);
+                inputs.forEach(inp => inp.disabled = true);
+            });
+
+            // Tampilkan Skor Akhir (Hanya untuk PG/BS/Kompleks)
+            const scoreBoard = document.getElementById('score-board');
+            const finalScoreEl = document.getElementById('final-score');
+            const finalValue = Math.round((score / maxScorePG) * 100);
+            
+            finalScoreEl.textContent = finalValue;
+            scoreBoard.style.display = "block";
+
+            // Sembunyikan tombol submit
+            document.getElementById('footer-action').style.display = "none";
+            
+            // Scroll ke atas untuk lihat nilai
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Jalankan saat load
+        renderQuestions();
+    </script>
+</body>
+</html>
