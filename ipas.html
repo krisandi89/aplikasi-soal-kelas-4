@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ujian IPAS Kelas 4 - SD Dilaraf Islamic School</title>
+    <style>
+        :root {
+            --primary: #27ae60; /* Warna Hijau untuk IPAS/Alam */
+            --secondary: #2ecc71;
+            --bg-color: #f1f8e9;
+            --card-bg: #ffffff;
+            --text: #2d3436;
+            --border: #dfe6e9;
+            --success: #00b894;
+            --error: #ff7675;
+            --warning: #ffeaa7;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            color: var(--text);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: var(--primary);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-bottom: 5px solid #1e8449;
+        }
+
+        .header h1 { margin: 0; font-size: 1.8em; }
+        .header p { margin: 10px 0 0; opacity: 0.9; }
+
+        .question-list {
+            padding: 30px;
+        }
+
+        .question-item {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px dashed var(--border);
+        }
+
+        .q-number {
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .q-text {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        /* Styles for Options */
+        .options-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .radio-label, .checkbox-label {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .radio-label:hover, .checkbox-label:hover {
+            background: #e8f5e9; /* Hijau muda saat hover */
+            border-color: var(--primary);
+        }
+
+        input[type="radio"], input[type="checkbox"] {
+            margin-right: 12px;
+            transform: scale(1.2);
+        }
+
+        /* Styles for Text Inputs */
+        .input-text, .input-area {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #b2bec3;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+        
+        .input-area { min-height: 80px; resize: vertical; }
+
+        .input-text:focus, .input-area:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: #f0f8ff;
+        }
+
+        /* Result & Feedback Box */
+        .feedback-box {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none; /* Hidden initially */
+            background-color: #f1f2f6;
+            border-left: 5px solid #ccc;
+        }
+
+        .feedback-box.correct {
+            background-color: #d4edda;
+            border-left-color: var(--success);
+            color: #155724;
+        }
+
+        .feedback-box.wrong {
+            background-color: #f8d7da;
+            border-left-color: var(--error);
+            color: #721c24;
+        }
+
+        .feedback-box.manual {
+            background-color: #fff3cd;
+            border-left-color: #ffc107;
+            color: #856404;
+        }
+
+        .answer-key {
+            font-weight: bold;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .explanation {
+            font-size: 0.9em;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        /* Sticky Footer for Submit */
+        .footer-action {
+            background: #f1f2f6;
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            position: sticky;
+            bottom: 0;
+            box-shadow: 0 -5px 10px rgba(0,0,0,0.05);
+        }
+
+        .btn-submit {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .btn-submit:hover {
+            transform: scale(1.05);
+            background-color: #219150;
+        }
+
+        .score-board {
+            text-align: center;
+            padding: 20px;
+            background: var(--secondary);
+            color: white;
+            display: none;
+            margin-bottom: 20px;
+            border-radius: 0 0 15px 15px;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            margin-top: 10px;
+            color: var(--bg-color);
+            text-decoration: underline;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>🌿 Ujian IPAS Kelas 4</h1>
+            <p>SD Dilaraf Islamic School</p>
+        </div>
+
+        <div class="score-board" id="score-board">
+            <h2>Hasil Pengerjaan</h2>
+            <div style="font-size: 3em; font-weight: bold;" id="final-score">0</div>
+            <p>Nilai di atas hanya untuk soal Pilihan Ganda & Benar Salah.</p>
+            <p>Silakan periksa Isian & Uraian secara mandiri di bawah ini.</p>
+            <a href="index.html" class="back-btn">Kembali ke Menu Utama</a>
+        </div>
+
+        <div class="question-list" id="question-container">
+            <!-- Soal akan di-render di sini oleh JavaScript -->
+        </div>
+
+        <div class="footer-action" id="footer-action">
+            <button class="btn-submit" onclick="submitExam()">Kumpulkan Jawaban ✅</button>
+        </div>
+    </div>
+
+    <script>
+        // Database Soal IPAS (40 Soal)
+        const questions = [
+            // --- PG (1-10) ---
+            {
+                id: 1, type: 'pg',
+                text: "Gas di atmosfer yang dapat memerangkap panas matahari disebut...",
+                options: ["Gas Oksigen", "Gas Rumah Kaca", "Gas Alam", "Gas Helium"],
+                answer: 1, hint: "Istilahnya mirip dengan bangunan tempat menanam tanaman."
+            },
+            {
+                id: 2, type: 'pg',
+                text: "Indonesia memiliki dua musim, yaitu...",
+                options: ["Hujan dan Salju", "Semi dan Gugur", "Hujan dan Kemarau", "Panas dan Dingin"],
+                answer: 2, hint: "Satu musim banyak air, satu musim kering."
+            },
+            {
+                id: 3, type: 'pg',
+                text: "Berdasarkan letak garis lintangnya, iklim di Indonesia adalah...",
+                options: ["Subtropis", "Kutub", "Sedang", "Tropis"],
+                answer: 3, hint: "Iklim yang panas dan mendapat sinar matahari sepanjang tahun."
+            },
+            {
+                id: 4, type: 'pg',
+                text: "Ciri-ciri musim semi adalah...",
+                options: ["Daun-daun berguguran", "Bunga-bunga mulai bermekaran", "Turun salju lebat", "Suhu sangat panas"],
+                answer: 1, hint: "Musim di mana tanaman mulai tumbuh kembali setelah musim dingin."
+            },
+            {
+                id: 5, type: 'pg',
+                text: "Global warming adalah istilah untuk menyebut...",
+                options: ["Pendinginan suhu bumi", "Pemanasan global", "Perubahan arah angin", "Banjir bandang"],
+                answer: 1, hint: "Warming artinya pemanasan."
+            },
+            {
+                id: 6, type: 'pg',
+                text: "Dampak negatif dari perubahan iklim yang ekstrem adalah...",
+                options: ["Tanaman tumbuh subur", "Bencana alam sering terjadi", "Udara menjadi sangat bersih", "Hewan-hewan bertambah banyak"],
+                answer: 1, hint: "Seperti banjir, kekeringan, dan badai."
+            },
+            {
+                id: 7, type: 'pg',
+                text: "Salah satu upaya mitigasi (pencegahan) pemanasan global adalah...",
+                options: ["Menebang hutan secara liar", "Menanam banyak pohon", "Menggunakan banyak plastik", "Boros listrik"],
+                answer: 1, hint: "Pohon menyerap karbon dioksida."
+            },
+            {
+                id: 8, type: 'pg',
+                text: "Contoh kenampakan alam di daerah dataran tinggi adalah...",
+                options: ["Pantai dan Laut", "Bukit dan Gunung", "Rawa dan Danau", "Gedung bertingkat"],
+                answer: 1, hint: "Wilayah yang posisinya tinggi dan udaranya sejuk."
+            },
+            {
+                id: 9, type: 'pg',
+                text: "Bentang alam adalah...",
+                options: ["Pemandangan alam atau fitur permukaan bumi", "Gedung-gedung buatan manusia", "Jalan raya yang panjang", "Kolam renang di rumah"],
+                answer: 0, hint: "Sesuatu yang terbentuk secara alami di bumi."
+            },
+            {
+                id: 10, type: 'pg',
+                text: "Ilmu yang mempelajari tentang pembuatan peta disebut...",
+                options: ["Geografi", "Sejarah", "Kartografi", "Sosiologi"],
+                answer: 2, hint: "Berawalan huruf K."
+            },
+            
+            // --- PG KOMPLEKS (11-20) ---
+            {
+                id: 11, type: 'pg_kompleks',
+                text: "Apa saja yang dapat kita lihat pada peta? (Pilih 2 jawaban)",
+                options: ["Batas wilayah", "Arah angin saat ini", "Lokasi sungai dan gunung", "Nama presiden"],
+                answer: [0, 2], hint: "Hal-hal yang bersifat tetap di suatu wilayah."
+            },
+            {
+                id: 12, type: 'pg_kompleks',
+                text: "Berikut ini adalah jenis-jenis peta... (Pilih 2 jawaban)",
+                options: ["Peta Harta Karun", "Peta Umum", "Peta Tematik (Khusus)", "Peta Mainan"],
+                answer: [1, 2], hint: "Peta yang menggambarkan seluruh kenampakan atau tema tertentu."
+            },
+            {
+                id: 13, type: 'pg_kompleks',
+                text: "Contoh simbol yang ada pada peta adalah... (Pilih 2 jawaban)",
+                options: ["Segitiga untuk gunung", "Foto selfie", "Garis biru untuk sungai", "Tanda tangan pembuat peta"],
+                answer: [0, 2], hint: "Gambar kecil yang mewakili keadaan sebenarnya."
+            },
+            {
+                id: 14, type: 'pg_kompleks',
+                text: "Hal yang harus diperhatikan saat membaca peta adalah... (Pilih 2 jawaban)",
+                options: ["Judul Peta", "Harga Peta", "Arah Mata Angin", "Warna Kertas"],
+                answer: [0, 2], hint: "Komponen penting agar tidak tersesat."
+            },
+            {
+                id: 15, type: 'pg_kompleks',
+                text: "Manfaat menggunakan peta adalah... (Pilih 2 jawaban)",
+                options: ["Mengetahui lokasi suatu tempat", "Untuk membungkus makanan", "Mengetahui jarak antar kota", "Sebagai hiasan dinding saja"],
+                answer: [0, 2], hint: "Fungsi utama peta."
+            },
+            {
+                id: 16, type: 'pg_kompleks',
+                text: "Dampak buruk perubahan iklim bagi bumi adalah... (Pilih 2 jawaban)",
+                options: ["Es di kutub mencair", "Permukaan air laut naik", "Udara menjadi sangat segar", "Pohon tumbuh lebih cepat"],
+                answer: [0, 1], hint: "Akibat suhu bumi yang makin panas."
+            },
+            {
+                id: 17, type: 'pg_kompleks',
+                text: "Cara sederhana mengurangi efek rumah kaca di rumah... (Pilih 2 jawaban)",
+                options: ["Mematikan lampu jika tidak dipakai", "Menyalakan AC seharian", "Menghemat penggunaan air", "Membakar sampah plastik"],
+                answer: [0, 2], hint: "Hemat energi."
+            },
+            {
+                id: 18, type: 'pg_kompleks',
+                text: "Ciri-ciri iklim tropis di Indonesia... (Pilih 2 jawaban)",
+                options: ["Mendapat sinar matahari sepanjang tahun", "Memiliki musim salju", "Suhu udara cenderung hangat/panas", "Malam hari sangat panjang"],
+                answer: [0, 2], hint: "Indonesia itu negara yang hangat."
+            },
+            {
+                id: 19, type: 'pg_kompleks',
+                text: "Tanda-tanda musim kemarau adalah... (Pilih 2 jawaban)",
+                options: ["Curah hujan sangat rendah", "Sering terjadi banjir", "Tanah menjadi kering dan retak", "Petani mulai menanam padi"],
+                answer: [0, 2], hint: "Saat air susah didapat."
+            },
+            {
+                id: 20, type: 'pg_kompleks',
+                text: "Tanda-tanda musim hujan adalah... (Pilih 2 jawaban)",
+                options: ["Langit sering mendung", "Udara terasa sangat panas", "Sering turun hujan deras", "Debu berterbangan"],
+                answer: [0, 2], hint: "Sedia payung sebelum..."
+            },
+
+            // --- MEMASANGKAN / ADAPTASI PG (21-25) ---
+            // Konteks: Perbedaan Bentang Alam & Karakteristik Wilayah
+            {
+                id: 21, type: 'pg',
+                text: "Indonesia dikenal sebagai negara kepulauan (Archipelago) karena...",
+                options: ["Terdiri dari ribuan pulau", "Hanya punya satu pulau besar", "Tidak punya laut", "Dikelilingi tembok besar"],
+                answer: 0, hint: "Banyak pulau."
+            },
+            {
+                id: 22, type: 'pg',
+                text: "Singapura adalah negara tetangga yang wilayahnya berupa...",
+                options: ["Pegunungan tinggi", "Negara kota / pulau kecil", "Gurun pasir", "Hutan rimba luas"],
+                answer: 1, hint: "Negara yang kecil tapi modern."
+            },
+            {
+                id: 23, type: 'pg',
+                text: "Mayoritas bentang alam di Indonesia yang dilalui garis khatulistiwa adalah...",
+                options: ["Gurun Pasir", "Hutan Hujan Tropis", "Tundra (Padang Es)", "Sabana Kering"],
+                answer: 1, hint: "Hutan yang hijau dan lebat."
+            },
+            {
+                id: 24, type: 'pg',
+                text: "Karena lahan yang sempit, Singapura memperluas daratannya dengan cara...",
+                options: ["Reklamasi (menimbun laut)", "Membeli pulau lain", "Mengeringkan sungai", "Membangun ke bawah tanah"],
+                answer: 0, hint: "Menimbun laut dengan pasir."
+            },
+            {
+                id: 25, type: 'pg',
+                text: "Indonesia dan Singapura sama-sama terletak di kawasan...",
+                options: ["Eropa Barat", "Asia Tenggara", "Amerika Selatan", "Afrika Utara"],
+                answer: 1, hint: "ASEAN."
+            },
+
+            // --- BENAR / SALAH (26-30) ---
+            {
+                id: 26, type: 'bs',
+                text: "Peta digital (seperti Google Maps) memudahkan kita mencari jalan tanpa membawa kertas peta.",
+                answer: "Benar", hint: "Teknologi modern."
+            },
+            {
+                id: 27, type: 'bs',
+                text: "Skala pada peta berfungsi untuk membandingkan jarak di peta dengan jarak sebenarnya.",
+                answer: "Benar", hint: "Fungsi utama skala."
+            },
+            {
+                id: 28, type: 'bs',
+                text: "Legenda pada peta berisi dongeng tentang asal-usul peta tersebut.",
+                answer: "Salah", hint: "Legenda berisi keterangan simbol."
+            },
+            {
+                id: 29, type: 'bs',
+                text: "Arah utara pada peta biasanya ditunjukkan dengan tanda panah menghadap ke bawah.",
+                answer: "Salah", hint: "Biasanya menghadap ke atas."
+            },
+            {
+                id: 30, type: 'bs',
+                text: "Atlas adalah kumpulan peta-peta yang dibukukan.",
+                answer: "Benar", hint: "Buku berisi banyak peta."
+            },
+
+            // --- ISIAN SINGKAT (31-35) ---
+            {
+                id: 31, type: 'isian',
+                text: "Tindakan menolak menggunakan bahan plastik sekali pakai disebut...",
+                answer: "Refuse", hint: "Bahasa Inggris dari 'Menolak'."
+            },
+            {
+                id: 32, type: 'isian',
+                text: "Mengurangi penggunaan barang yang berpotensi jadi sampah disebut...",
+                answer: "Reduce", hint: "Bahasa Inggris dari 'Mengurangi'."
+            },
+            {
+                id: 33, type: 'isian',
+                text: "Menggunakan kembali barang bekas (seperti botol untuk pot) disebut...",
+                answer: "Reuse", hint: "Bahasa Inggris dari 'Menggunakan kembali'."
+            },
+            {
+                id: 34, type: 'isian',
+                text: "Mengolah kembali sampah menjadi barang baru disebut...",
+                answer: "Recycle", hint: "Bahasa Inggris dari 'Daur ulang'."
+            },
+            {
+                id: 35, type: 'isian',
+                text: "Gas yang menyelimuti bumi seperti rumah kaca dan menjaga suhu bumi tetap hangat disebut Gas...",
+                answer: "Rumah Kaca", hint: "Greenhouse Gas."
+            },
+
+            // --- URAIAN (36-40) ---
+            {
+                id: 36, type: 'uraian',
+                text: "Jelaskan perbedaan antara dataran tinggi dan dataran rendah!",
+                answer: "Dataran tinggi wilayahnya sejuk dan di atas 500mdpl, dataran rendah panas dan dekat pantai/0-200mdpl.", hint: "Bandingkan suhu dan ketinggiannya."
+            },
+            {
+                id: 37, type: 'uraian',
+                text: "Jelaskan pengertian Peta dengan bahasamu sendiri!",
+                answer: "Gambaran permukaan bumi pada bidang datar dengan skala tertentu.", hint: "Gambar bumi di kertas rata."
+            },
+            {
+                id: 38, type: 'uraian',
+                text: "Sebutkan 3 komponen (bagian) yang ada pada peta!",
+                answer: "Judul, Skala, Legenda, Arah Mata Angin, Simbol", hint: "Apa saja yang wajib ada di peta?"
+            },
+            {
+                id: 39, type: 'uraian',
+                text: "Sebutkan pembagian iklim dunia berdasarkan garis lintang!",
+                answer: "Iklim Tropis, Subtropis, Sedang, dan Kutub", hint: "Ada 4 jenis iklim utama."
+            },
+            {
+                id: 40, type: 'uraian',
+                text: "Jelaskan apa yang dimaksud dengan Efek Rumah Kaca!",
+                answer: "Proses terperangkapnya panas matahari di atmosfer bumi sehingga bumi tetap hangat.", hint: "Bayangkan mobil yang diparkir di bawah matahari, dalamnya panas kan?"
+            }
+        ];
+
+        const container = document.getElementById('question-container');
+
+        // 1. RENDER SOAL
+        function renderQuestions() {
+            let html = "";
+            questions.forEach((q, index) => {
+                let inputHtml = "";
+                let qNum = index + 1;
+
+                if (q.type === 'pg' || q.type === 'bs') {
+                    // Pilihan Ganda & Benar Salah
+                    let options = q.type === 'bs' ? ["Benar", "Salah"] : q.options;
+                    
+                    options.forEach((opt, i) => {
+                        let val = q.type === 'bs' ? opt : i; 
+                        inputHtml += `
+                            <label class="radio-label">
+                                <input type="radio" name="q${q.id}" value="${val}">
+                                ${q.type === 'pg' ? String.fromCharCode(65+i) + '. ' : ''} ${opt}
+                            </label>
+                        `;
+                    });
+                } 
+                else if (q.type === 'pg_kompleks') {
+                    // Checkbox
+                    q.options.forEach((opt, i) => {
+                        inputHtml += `
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="q${q.id}" value="${i}">
+                                ${opt}
+                            </label>
+                        `;
+                    });
+                }
+                else if (q.type === 'isian') {
+                    // Input Text Pendek
+                    inputHtml = `<input type="text" class="input-text" name="q${q.id}" placeholder="Ketik jawabanmu..." autocomplete="off">`;
+                }
+                else if (q.type === 'uraian') {
+                    // Textarea
+                    inputHtml = `<textarea class="input-area" name="q${q.id}" placeholder="Tulis jawaban lengkapmu di sini..."></textarea>`;
+                }
+
+                html += `
+                    <div class="question-item" id="q-block-${q.id}">
+                        <span class="q-number">Soal No. ${qNum}</span>
+                        <div class="q-text">${q.text}</div>
+                        <div class="options-group">
+                            ${inputHtml}
+                        </div>
+                        <div class="feedback-box" id="feedback-${q.id}"></div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        // 2. FUNGSI SUBMIT & NILAI
+        function submitExam() {
+            let score = 0;
+            let maxScorePG = 0; // Hanya hitung skor max untuk soal yang dinilai otomatis
+            
+            questions.forEach(q => {
+                const feedbackEl = document.getElementById(`feedback-${q.id}`);
+                let isCorrect = false;
+                let userAnswer = "-";
+                
+                // --- LOGIKA PENILAIAN ---
+                if (q.type === 'pg' || q.type === 'bs') {
+                    maxScorePG++;
+                    const selected = document.querySelector(`input[name="q${q.id}"]:checked`);
+                    if (selected) {
+                        userAnswer = selected.value;
+                        let valToCheck = q.type === 'pg' ? parseInt(userAnswer) : userAnswer;
+                        if (valToCheck === q.answer) isCorrect = true;
+                    }
+
+                    if (isCorrect) {
+                        score++;
+                        feedbackEl.className = "feedback-box correct";
+                        feedbackEl.innerHTML = `✅ <b>Jawaban Benar!</b>`;
+                    } else {
+                        feedbackEl.className = "feedback-box wrong";
+                        let correctText = (q.type === 'pg') ? q.options[q.answer] : q.answer;
+                        feedbackEl.innerHTML = `❌ <b>Jawaban Kurang Tepat.</b><br>
+                                                <span class="answer-key">Kunci Jawaban: ${correctText}</span>
+                                                <div class="explanation">Hint: ${q.hint}</div>`;
+                    }
+                } 
+                else if (q.type === 'pg_kompleks') {
+                    maxScorePG++;
+                    const checkedBoxes = document.querySelectorAll(`input[name="q${q.id}"]:checked`);
+                    let userIndices = Array.from(checkedBoxes).map(cb => parseInt(cb.value)).sort();
+                    let correctIndices = [...q.answer].sort();
+                    
+                    if (JSON.stringify(userIndices) === JSON.stringify(correctIndices)) {
+                        isCorrect = true;
+                        score++;
+                        feedbackEl.className = "feedback-box correct";
+                        feedbackEl.innerHTML = `✅ <b>Jawaban Benar!</b>`;
+                    } else {
+                        feedbackEl.className = "feedback-box wrong";
+                        let correctText = q.answer.map(idx => "• " + q.options[idx]).join("<br>");
+                        feedbackEl.innerHTML = `❌ <b>Jawaban Kurang Tepat.</b><br>
+                                                <span class="answer-key">Seharusnya memilih:</span><br>${correctText}
+                                                <div class="explanation">Hint: ${q.hint}</div>`;
+                    }
+                }
+                else if (q.type === 'isian' || q.type === 'uraian') {
+                    // Manual Review
+                    const input = document.querySelector(`[name="q${q.id}"]`);
+                    userAnswer = input ? input.value : "";
+                    
+                    feedbackEl.className = "feedback-box manual";
+                    feedbackEl.innerHTML = `📝 <b>Silakan Periksa Mandiri</b><br>
+                                            Jawaban Kamu: <b>${userAnswer || "(Kosong)"}</b><br>
+                                            <span class="answer-key">Kunci Jawaban Guru: ${q.answer}</span>`;
+                }
+
+                feedbackEl.style.display = "block";
+                const inputs = document.querySelectorAll(`[name="q${q.id}"]`);
+                inputs.forEach(inp => inp.disabled = true);
+            });
+
+            // Tampilkan Skor Akhir
+            const scoreBoard = document.getElementById('score-board');
+            const finalScoreEl = document.getElementById('final-score');
+            const finalValue = Math.round((score / maxScorePG) * 100);
+            
+            finalScoreEl.textContent = finalValue;
+            scoreBoard.style.display = "block";
+            document.getElementById('footer-action').style.display = "none";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        renderQuestions();
+    </script>
+</body>
+</html>
