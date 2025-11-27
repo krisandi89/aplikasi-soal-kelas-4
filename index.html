@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latihan Soal SD Dilaraf Islamic School</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px #ffeaa7;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #555;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            width: 250px;
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            border: 3px solid transparent;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            border-color: #74b9ff;
+        }
+
+        .card-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #2d3436;
+            margin-bottom: 10px;
+        }
+
+        .card-desc {
+            color: #636e72;
+            font-size: 0.9em;
+        }
+
+        .btn-start {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #0984e3;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .btn-start:hover {
+            background-color: #74b9ff;
+        }
+
+        footer {
+            margin-top: auto;
+            padding-top: 40px;
+            color: #b2bec3;
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🌟 Ruang Belajar Ceria 🌟</h1>
+    <div class="subtitle">SD DILARAF ISLAMIC SCHOOL - Kelas 4</div>
+
+    <div class="card-container">
+        <!-- Kartu Pendidikan Pancasila -->
+        <div class="card" onclick="window.location.href='pancasila.html'">
+            <div class="card-icon">🇮🇩</div>
+            <div class="card-title">Pendidikan Pancasila</div>
+            <div class="card-desc">Belajar tentang Hak, Kewajiban, dan Cinta Tanah Air.</div>
+            <a href="pancasila.html" class="btn-start">Mulai Latihan!</a>
+        </div>
+
+        <!-- Kartu Placeholder untuk Mapel Lain -->
+        <div class="card" style="opacity: 0.6; cursor: not-allowed;">
+            <div class="card-icon">➗</div>
+            <div class="card-title">Matematika</div>
+            <div class="card-desc">Segera Hadir!</div>
+            <span class="btn-start" style="background-color: #ccc;">Tunggu Ya</span>
+        </div>
+
+        <div class="card" style="opacity: 0.6; cursor: not-allowed;">
+            <div class="card-icon">🌿</div>
+            <div class="card-title">IPAS</div>
+            <div class="card-desc">Segera Hadir!</div>
+            <span class="btn-start" style="background-color: #ccc;">Tunggu Ya</span>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2025 SD Dilaraf Islamic School. Tetap Semangat Belajar!
+    </footer>
+
+</body>
+</html>
