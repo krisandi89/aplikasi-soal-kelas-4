@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ujian Bahasa Arab Kelas 4 - SD Dilaraf Islamic School</title>
+    <style>
+        :root {
+            --primary: #d35400; /* Warna Oranye kecoklatan / Gurun */
+            --secondary: #e67e22;
+            --bg-color: #fdf2e9;
+            --card-bg: #ffffff;
+            --text: #2d3436;
+            --border: #dfe6e9;
+            --success: #27ae60;
+            --error: #c0392b;
+            --warning: #f1c40f;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            color: var(--text);
+        }
+
+        /* Font khusus Arab agar lebih jelas */
+        .arabic-text {
+            font-family: 'Amiri', 'Scheherazade', serif;
+            font-size: 1.4em;
+            direction: rtl;
+            display: inline-block;
+            margin: 0 5px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: var(--primary);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-bottom: 5px solid #a04000;
+        }
+
+        .header h1 { margin: 0; font-size: 1.8em; }
+        .header p { margin: 10px 0 0; opacity: 0.9; }
+
+        .question-list {
+            padding: 30px;
+        }
+
+        .question-item {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px dashed var(--border);
+        }
+
+        .q-number {
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .q-text {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        /* Styles for Options */
+        .options-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .radio-label, .checkbox-label {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .radio-label:hover, .checkbox-label:hover {
+            background: #fae5d3;
+            border-color: var(--primary);
+        }
+
+        input[type="radio"], input[type="checkbox"] {
+            margin-right: 12px;
+            transform: scale(1.2);
+        }
+
+        /* Styles for Text Inputs */
+        .input-text, .input-area {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #b2bec3;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+        
+        .input-area { min-height: 80px; resize: vertical; }
+
+        .input-text:focus, .input-area:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: #fef9e7;
+        }
+
+        /* Result & Feedback Box */
+        .feedback-box {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none; /* Hidden initially */
+            background-color: #f1f2f6;
+            border-left: 5px solid #ccc;
+        }
+
+        .feedback-box.correct {
+            background-color: #d4edda;
+            border-left-color: var(--success);
+            color: #155724;
+        }
+
+        .feedback-box.wrong {
+            background-color: #f8d7da;
+            border-left-color: var(--error);
+            color: #721c24;
+        }
+
+        .feedback-box.manual {
+            background-color: #fff3cd;
+            border-left-color: #ffc107;
+            color: #856404;
+        }
+
+        .answer-key {
+            font-weight: bold;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .explanation {
+            font-size: 0.9em;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        /* Sticky Footer for Submit */
+        .footer-action {
+            background: #f1f2f6;
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            position: sticky;
+            bottom: 0;
+            box-shadow: 0 -5px 10px rgba(0,0,0,0.05);
+        }
+
+        .btn-submit {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .btn-submit:hover {
+            transform: scale(1.05);
+            background-color: #a04000;
+        }
+
+        .score-board {
+            text-align: center;
+            padding: 20px;
+            background: var(--secondary);
+            color: white;
+            display: none;
+            margin-bottom: 20px;
+            border-radius: 0 0 15px 15px;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            margin-top: 10px;
+            color: var(--bg-color);
+            text-decoration: underline;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+    <!-- Import Google Font for Arabic -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>🕌 Ujian Bahasa Arab</h1>
+            <p>Kelas 4 - SD Dilaraf Islamic School</p>
+        </div>
+
+        <div class="score-board" id="score-board">
+            <h2>Hasil Pengerjaan</h2>
+            <div style="font-size: 3em; font-weight: bold;" id="final-score">0</div>
+            <p>Nilai di atas hanya untuk soal Pilihan Ganda & Benar Salah.</p>
+            <p>Silakan periksa Isian & Uraian secara mandiri di bawah ini.</p>
+            <a href="index.html" class="back-btn">Kembali ke Menu Utama</a>
+        </div>
+
+        <div class="question-list" id="question-container">
+            <!-- Soal akan di-render di sini oleh JavaScript -->
+        </div>
+
+        <div class="footer-action" id="footer-action">
+            <button class="btn-submit" onclick="submitExam()">Kumpulkan Jawaban ✅</button>
+        </div>
+    </div>
+
+    <script>
+        /*
+          KISI-KISI:
+          1. Dhomir Munfashil (Kata Ganti Terpisah) -> Huwa, Hiya, Anta, Anti, Ana, Nahnu
+          2. Cita-cita (Amali) -> Mudarris, Thobib, Syurti, Jundi, dll.
+          3. Dhomir Muttashil (Kata Ganti Bersambung) -> -ii, -ka, -ki, -hu, -ha
+        */
+
+        const questions = [
+            // --- PG (1-10) : Dhomir Munfashil & Kosakata Cita-cita ---
+            {
+                id: 1, type: 'pg',
+                text: "Arti dari kata ganti <span class='arabic-text'>هُوَ</span> (Huwa) adalah...",
+                options: ["Dia (Laki-laki)", "Dia (Perempuan)", "Kamu (Laki-laki)", "Saya"],
+                answer: 0, hint: "Huwa untuk laki-laki, Hiya untuk perempuan."
+            },
+            {
+                id: 2, type: 'pg',
+                text: "Arti dari kata ganti <span class='arabic-text'>أَنْتِ</span> (Anti) adalah...",
+                options: ["Kamu (Laki-laki)", "Dia (Perempuan)", "Kamu (Perempuan)", "Kami"],
+                answer: 2, hint: "Anti pakai kasrah, untuk perempuan."
+            },
+            {
+                id: 3, type: 'pg',
+                text: "Kata ganti untuk 'Saya' dalam bahasa Arab adalah...",
+                options: ["<span class='arabic-text'>أَنَا</span> (Ana)", "<span class='arabic-text'>نَحْنُ</span> (Nahnu)", "<span class='arabic-text'>أَنْتَ</span> (Anta)", "<span class='arabic-text'>هُوَ</span> (Huwa)"],
+                answer: 0, hint: "Ana..."
+            },
+            {
+                id: 4, type: 'pg',
+                text: "Jika kita ingin menunjuk 'Dia (Perempuan)', kita menggunakan kata...",
+                options: ["<span class='arabic-text'>هُوَ</span>", "<span class='arabic-text'>هِيَ</span>", "<span class='arabic-text'>أَنْتَ</span>", "<span class='arabic-text'>أَنْتِ</span>"],
+                answer: 1, hint: "Pasangannya Huwa adalah..."
+            },
+            {
+                id: 5, type: 'pg',
+                text: "Kata ganti <span class='arabic-text'>نَحْنُ</span> (Nahnu) artinya adalah...",
+                options: ["Saya", "Kamu", "Mereka", "Kami / Kita"],
+                answer: 3, hint: "Untuk orang banyak termasuk saya."
+            },
+            {
+                id: 6, type: 'pg',
+                text: "Bahasa Arab dari 'Guru (Laki-laki)' adalah...",
+                options: ["<span class='arabic-text'>طَبِيْبٌ</span>", "<span class='arabic-text'>مُدَرِّسٌ</span>", "<span class='arabic-text'>شُرْطِيٌّ</span>", "<span class='arabic-text'>تَاجِرٌ</span>"],
+                answer: 1, hint: "Mudarrisun."
+            },
+            {
+                id: 7, type: 'pg',
+                text: "Arti dari kata <span class='arabic-text'>طَبِيْبٌ</span> (Thobiibun) adalah...",
+                options: ["Insinyur", "Petani", "Dokter", "Pilot"],
+                answer: 2, hint: "Orang yang menyembuhkan orang sakit."
+            },
+            {
+                id: 8, type: 'pg',
+                text: "Cita-citaku menjadi 'Tentara'. Bahasa Arabnya adalah...",
+                options: ["<span class='arabic-text'>جُنْدِيٌّ</span> (Jundiyyun)", "<span class='arabic-text'>فَلَّاحٌ</span> (Fallaahun)", "<span class='arabic-text'>طَيَّارٌ</span> (Thoyyarun)", "<span class='arabic-text'>مُهَنْدِسٌ</span> (Muhandisun)"],
+                answer: 0, hint: "Jundiyyun."
+            },
+            {
+                id: 9, type: 'pg',
+                text: "Arti dari <span class='arabic-text'>شُرْطِيٌّ</span> (Syurthiyyun) adalah...",
+                options: ["Polisi", "Tentara", "Pedagang", "Nelayan"],
+                answer: 0, hint: "Orang yang mengatur lalu lintas."
+            },
+            {
+                id: 10, type: 'pg',
+                text: "<span class='arabic-text'>أَمَلِيْ</span> (Amalii) artinya adalah...",
+                options: ["Sekolahku", "Cita-citaku", "Rumahku", "Bukuku"],
+                answer: 1, hint: "Tema bab ini."
+            },
+            
+            // --- PG KOMPLEKS (11-20) ---
+            {
+                id: 11, type: 'pg_kompleks',
+                text: "Manakah yang termasuk Dhomir Munfashil (Kata Ganti Terpisah)? (Pilih 2 jawaban)",
+                options: ["<span class='arabic-text'>هُوَ</span> (Huwa)", "<span class='arabic-text'>كِتَابِيْ</span> (Kitaabii)", "<span class='arabic-text'>أَنْتَ</span> (Anta)", "<span class='arabic-text'>قَلَمُكَ</span> (Qolamuka)"],
+                answer: [0, 2], hint: "Cari kata yang berdiri sendiri seperti Dia, Kamu."
+            },
+            {
+                id: 12, type: 'pg_kompleks',
+                text: "Pilih kata ganti yang digunakan untuk PEREMPUAN! (Pilih 2 jawaban)",
+                options: ["<span class='arabic-text'>هُوَ</span> (Huwa)", "<span class='arabic-text'>هِيَ</span> (Hiya)", "<span class='arabic-text'>أَنْتَ</span> (Anta)", "<span class='arabic-text'>أَنْتِ</span> (Anti)"],
+                answer: [1, 3], hint: "Hiya dan Anti."
+            },
+            {
+                id: 13, type: 'pg_kompleks',
+                text: "Pasangan Dhomir dan Artinya yang benar adalah... (Pilih 2 jawaban)",
+                options: ["<span class='arabic-text'>أَنَا</span> = Saya", "<span class='arabic-text'>نَحْنُ</span> = Dia", "<span class='arabic-text'>أَنْتَ</span> = Kamu (Lk)", "<span class='arabic-text'>هُوَ</span> = Kamu (Pr)"],
+                answer: [0, 2], hint: "Cek arti Ana dan Anta."
+            },
+            {
+                id: 14, type: 'pg_kompleks',
+                text: "Manakah penggunaan kata tunjuk yang benar? (Pilih 2 jawaban)",
+                options: ["<span class='arabic-text'>هُوَ مُدَرِّسٌ</span> (Dia Pak Guru)", "<span class='arabic-text'>هِيَ طَبِيْبٌ</span> (Dia Bu Dokter)", "<span class='arabic-text'>هِيَ مُدَرِّسَةٌ</span> (Dia Bu Guru)", "<span class='arabic-text'>أَنْتِ مُهَنْدِسٌ</span> (Kamu Bu Insinyur)"],
+                answer: [0, 2], hint: "Perempuan harus ada Ta' Marbutoh (ة)."
+            },
+            {
+                id: 15, type: 'pg_kompleks',
+                text: "Pilihlah kosakata yang termasuk profesi/cita-cita! (Pilih 2 jawaban)",
+                options: ["<span class='arabic-text'>طَيَّارٌ</span> (Pilot)", "<span class='arabic-text'>مَدْرَسَةٌ</span> (Sekolah)", "<span class='arabic-text'>تَاجِرٌ</span> (Pedagang)", "<span class='arabic-text'>فَصْلٌ</span> (Kelas)"],
+                answer: [0, 2], hint: "Pekerjaan orang."
+            },
+            {
+                id: 16, type: 'pg_kompleks',
+                text: "Apa saja pekerjaan yang bekerja di Rumah Sakit? (Pilih 2 jawaban)",
+                options: ["<span class='arabic-text'>طَبِيْبٌ</span> (Dokter)", "<span class='arabic-text'>مُمَرِّضَةٌ</span> (Perawat)", "<span class='arabic-text'>فَلَّاحٌ</span> (Petani)", "<span class='arabic-text'>مُدَرِّسٌ</span> (Guru)"],
+                answer: [0, 1], hint: "Dokter dan Perawat."
+            },
+            {
+                id: 17, type: 'pg_kompleks',
+                text: "Manakah profesi yang biasa ada di sekolah? (Pilih 2 jawaban)",
+                options: ["<span class='arabic-text'>مُدَرِّسٌ</span> (Guru)", "<span class='arabic-text'>طَالِبٌ</span> (Siswa)", "<span class='arabic-text'>طَيَّارٌ</span> (Pilot)", "<span class='arabic-text'>تَاجِرٌ</span> (Pedagang)"],
+                answer: [0, 1], hint: "Guru dan Murid."
+            },
+            {
+                id: 18, type: 'pg_kompleks',
+                text: "Tanda Dhomir Muttashil (Kepemilikan) yang benar adalah... (Pilih 2 jawaban)",
+                options: ["<span class='arabic-text'>...ـيْ</span> (..ku)", "<span class='arabic-text'>...ـكَ</span> (..mu Lk)", "<span class='arabic-text'>...ـهُ</span> (..mu Pr)", "<span class='arabic-text'>...ـهَا</span> (..ku)"],
+                answer: [0, 1], hint: "Ya sukun untuk 'ku', Ka untuk 'mu'."
+            },
+            {
+                id: 19, type: 'pg_kompleks',
+                text: "Manakah kata yang memiliki Dhomir Muttashil (Kata ganti sambung)? (Pilih 2 jawaban)",
+                options: ["<span class='arabic-text'>كِتَابِيْ</span> (Bukuku)", "<span class='arabic-text'>قَلَمُكَ</span> (Pena-mu)", "<span class='arabic-text'>أُسْتَاذٌ</span> (Guru)", "<span class='arabic-text'>مُوَظَّفٌ</span> (Pegawai)"],
+                answer: [0, 1], hint: "Cari yang ada akhiran -ii atau -ka."
+            },
+            {
+                id: 20, type: 'pg_kompleks',
+                text: "Arti yang tepat untuk dhomir muttashil berikut adalah... (Pilih 2 jawaban)",
+                options: ["<span class='arabic-text'>ـهَا</span> (...haa) = -nya (Pr)", "<span class='arabic-text'>ـهُ</span> (...hu) = -nya (Lk)", "<span class='arabic-text'>ـكَ</span> (...ka) = -ku", "<span class='arabic-text'>ـيْ</span> (...ii) = -mu"],
+                answer: [0, 1], hint: "Hu untuk dia laki, Ha untuk dia perempuan."
+            },
+
+            // --- MEMASANGKAN / ADAPTASI PG (21-27) ---
+            {
+                id: 21, type: 'pg',
+                text: "Pasangan yang tepat untuk kata <span class='arabic-text'>أَنْتَ</span> adalah...",
+                options: ["<span class='arabic-text'>طَبِيْبٌ</span> (Laki-laki)", "<span class='arabic-text'>طَبِيْبَةٌ</span> (Perempuan)", "<span class='arabic-text'>مُمَرِّضَةٌ</span> (Perempuan)", "<span class='arabic-text'>تِلْمِيْذَةٌ</span> (Perempuan)"],
+                answer: 0, hint: "Anta untuk laki-laki."
+            },
+            {
+                id: 22, type: 'pg',
+                text: "Kata <span class='arabic-text'>هُنَّ</span> (Hunna) digunakan untuk...",
+                options: ["Dia satu laki-laki", "Mereka perempuan banyak", "Mereka laki-laki banyak", "Dia satu perempuan"],
+                answer: 1, hint: "Jamak perempuan."
+            },
+            {
+                id: 23, type: 'pg',
+                text: "Profesi <span class='arabic-text'>مُهَنْدِسٌ</span> (Muhandisun) artinya...",
+                options: ["Insinyur", "Petani", "Sopir", "Dokter"],
+                answer: 0, hint: "Orang yang merancang bangunan."
+            },
+            {
+                id: 24, type: 'pg',
+                text: "Profesi <span class='arabic-text'>تَاجِرٌ</span> (Taajirun) artinya...",
+                options: ["Pedagang", "Guru", "Tentara", "Polisi"],
+                answer: 0, hint: "Orang yang berjualan di pasar."
+            },
+            {
+                id: 25, type: 'pg',
+                text: "Profesi <span class='arabic-text'>فَلَّاحٌ</span> (Fallaahun) artinya...",
+                options: ["Petani", "Nelayan", "Pilot", "Sopir"],
+                answer: 0, hint: "Orang yang bekerja di sawah."
+            },
+            {
+                id: 26, type: 'pg',
+                text: "Jika 'Kitabun' + 'Ana' (Saya), maka menjadi...",
+                options: ["<span class='arabic-text'>كِتَابُكَ</span> (Kitabuka)", "<span class='arabic-text'>كِتَابِيْ</span> (Kitaabii)", "<span class='arabic-text'>كِتَابُهُ</span> (Kitaabuhu)", "<span class='arabic-text'>كِتَابُهَا</span> (Kitaabuha)"],
+                answer: 1, hint: "Tambahkan Ya sukun di akhir."
+            },
+            {
+                id: 27, type: 'pg',
+                text: "Jika 'Qolamun' + 'Anta' (Kamu Lk), maka menjadi...",
+                options: ["<span class='arabic-text'>قَلَمِيْ</span> (Qolamii)", "<span class='arabic-text'>قَلَمُكِ</span> (Qolamuki)", "<span class='arabic-text'>قَلَمُكَ</span> (Qolamuka)", "<span class='arabic-text'>قَلَمُهُ</span> (Qolamuhu)"],
+                answer: 2, hint: "Akhirannya Ka."
+            },
+
+            // --- ISIAN SINGKAT (28-35) ---
+            {
+                id: 28, type: 'isian',
+                text: "Apa bahasa Arab dari 'Polisi'?",
+                answer: "Syurtiyun", hint: "Syur..."
+            },
+            {
+                id: 29, type: 'isian',
+                text: "Apa bahasa Arab dari 'Dokter'?",
+                answer: "Thobibun", hint: "Tho..."
+            },
+            {
+                id: 30, type: 'isian',
+                text: "Apa arti dari <span class='arabic-text'>مُوَظَّفٌ</span> (Muwazhofun)?",
+                answer: "Pegawai", hint: "Orang yang bekerja di kantor (Pegawai/Karyawan)."
+            },
+            {
+                id: 31, type: 'isian',
+                text: "Tuliskan latin dari kata ganti <span class='arabic-text'>نَحْنُ</span>!",
+                answer: "Nahnu", hint: "Na - h - nu."
+            },
+            {
+                id: 32, type: 'isian',
+                text: "Tuliskan latin dari kata ganti <span class='arabic-text'>أَنَا</span>!",
+                answer: "Ana", hint: "A - na."
+            },
+            {
+                id: 33, type: 'isian',
+                text: "Lengkapi: <span class='arabic-text'>أَنَا ...</span> (Guru).",
+                answer: "Mudarrisun", hint: "Bahasa Arabnya Guru."
+            },
+            {
+                id: 34, type: 'isian',
+                text: "Lengkapi: <span class='arabic-text'>هُوَ ...</span> (Pedagang).",
+                answer: "Tajirun", hint: "Bahasa Arabnya Pedagang."
+            },
+            {
+                id: 35, type: 'isian',
+                text: "Lengkapi: <span class='arabic-text'>أَمَلِيْ ...</span> (Insinyur).",
+                answer: "Muhandisun", hint: "Bahasa Arabnya Insinyur."
+            },
+
+            // --- URAIAN (36-40) ---
+            {
+                id: 36, type: 'uraian',
+                text: "Sebutkan 3 macam Dhomir Munfashil beserta artinya!",
+                answer: "Huwa (Dia Lk), Hiya (Dia Pr), Anta (Kamu Lk), Anti (Kamu Pr), Ana (Saya), Nahnu (Kami)", hint: "Contoh: Huwa, Hiya, Ana."
+            },
+            {
+                id: 37, type: 'uraian',
+                text: "Sebutkan 3 kosakata cita-cita dalam bahasa Arab beserta artinya!",
+                answer: "Thobibun (Dokter), Mudarrisun (Guru), Syurtiyun (Polisi)", hint: "Boleh apa saja yang kamu hafal."
+            },
+            {
+                id: 38, type: 'uraian',
+                text: "Ubahlah kata <span class='arabic-text'>كِتَابٌ</span> (Buku) menjadi 'Bukuku' dan 'Bukumu (Lk)'!",
+                answer: "Kitabii (Bukuku), Kitabuka (Bukumu)", hint: "Gunakan akhiran -ii dan -ka."
+            },
+            {
+                id: 39, type: 'uraian',
+                text: "Apa bedanya <span class='arabic-text'>هُوَ</span> (Huwa) dan <span class='arabic-text'>هِيَ</span> (Hiya)? Jelaskan!",
+                answer: "Huwa untuk Dia Laki-laki, Hiya untuk Dia Perempuan", hint: "Bedanya di jenis kelamin."
+            },
+            {
+                id: 40, type: 'uraian',
+                text: "Terjemahkan ke bahasa Indonesia: <span class='arabic-text'>أَنَا طَالِبٌ وَ أَنْتِ طَالِبَةٌ</span>",
+                answer: "Saya siswa (lk) dan kamu siswi (pr)", hint: "Ana Tholibun wa Anti Tholibatun."
+            }
+        ];
+
+        const container = document.getElementById('question-container');
+
+        // 1. RENDER SOAL
+        function renderQuestions() {
+            let html = "";
+            questions.forEach((q, index) => {
+                let inputHtml = "";
+                let qNum = index + 1;
+
+                if (q.type === 'pg' || q.type === 'bs') {
+                    // Pilihan Ganda & Benar Salah
+                    let options = q.type === 'bs' ? ["Benar", "Salah"] : q.options;
+                    
+                    options.forEach((opt, i) => {
+                        let val = q.type === 'bs' ? opt : i; 
+                        inputHtml += `
+                            <label class="radio-label">
+                                <input type="radio" name="q${q.id}" value="${val}">
+                                ${q.type === 'pg' ? String.fromCharCode(65+i) + '. ' : ''} ${opt}
+                            </label>
+                        `;
+                    });
+                } 
+                else if (q.type === 'pg_kompleks') {
+                    // Checkbox
+                    q.options.forEach((opt, i) => {
+                        inputHtml += `
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="q${q.id}" value="${i}">
+                                ${opt}
+                            </label>
+                        `;
+                    });
+                }
+                else if (q.type === 'isian') {
+                    // Input Text Pendek
+                    inputHtml = `<input type="text" class="input-text" name="q${q.id}" placeholder="Ketik jawaban latin di sini..." autocomplete="off">`;
+                }
+                else if (q.type === 'uraian') {
+                    // Textarea
+                    inputHtml = `<textarea class="input-area" name="q${q.id}" placeholder="Tulis jawaban lengkapmu di sini..."></textarea>`;
+                }
+
+                html += `
+                    <div class="question-item" id="q-block-${q.id}">
+                        <span class="q-number">Soal No. ${qNum}</span>
+                        <div class="q-text">${q.text}</div>
+                        <div class="options-group">
+                            ${inputHtml}
+                        </div>
+                        <div class="feedback-box" id="feedback-${q.id}"></div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        // 2. FUNGSI SUBMIT & NILAI
+        function submitExam() {
+            let score = 0;
+            let maxScorePG = 0; 
+            
+            questions.forEach(q => {
+                const feedbackEl = document.getElementById(`feedback-${q.id}`);
+                let isCorrect = false;
+                let userAnswer = "-";
+                
+                // --- LOGIKA PENILAIAN ---
+                if (q.type === 'pg' || q.type === 'bs') {
+                    maxScorePG++;
+                    const selected = document.querySelector(`input[name="q${q.id}"]:checked`);
+                    if (selected) {
+                        userAnswer = selected.value;
+                        let valToCheck = q.type === 'pg' ? parseInt(userAnswer) : userAnswer;
+                        if (valToCheck === q.answer) isCorrect = true;
+                    }
+
+                    if (isCorrect) {
+                        score++;
+                        feedbackEl.className = "feedback-box correct";
+                        feedbackEl.innerHTML = `✅ <b>Ahsanta! (Benar)</b>`;
+                    } else {
+                        feedbackEl.className = "feedback-box wrong";
+                        let correctText = (q.type === 'pg') ? q.options[q.answer] : q.answer;
+                        feedbackEl.innerHTML = `❌ <b>Kurang Tepat.</b><br>
+                                                <span class="answer-key">Jawaban Benar: ${correctText}</span>
+                                                <div class="explanation">Hint: ${q.hint}</div>`;
+                    }
+                } 
+                else if (q.type === 'pg_kompleks') {
+                    maxScorePG++;
+                    const checkedBoxes = document.querySelectorAll(`input[name="q${q.id}"]:checked`);
+                    let userIndices = Array.from(checkedBoxes).map(cb => parseInt(cb.value)).sort();
+                    let correctIndices = [...q.answer].sort();
+                    
+                    if (JSON.stringify(userIndices) === JSON.stringify(correctIndices)) {
+                        isCorrect = true;
+                        score++;
+                        feedbackEl.className = "feedback-box correct";
+                        feedbackEl.innerHTML = `✅ <b>Ahsanta! (Benar)</b>`;
+                    } else {
+                        feedbackEl.className = "feedback-box wrong";
+                        let correctText = q.answer.map(idx => "• " + q.options[idx]).join("<br>");
+                        feedbackEl.innerHTML = `❌ <b>Kurang Tepat.</b><br>
+                                                <span class="answer-key">Seharusnya memilih:</span><br>${correctText}
+                                                <div class="explanation">Hint: ${q.hint}</div>`;
+                    }
+                }
+                else if (q.type === 'isian' || q.type === 'uraian') {
+                    // Manual Review
+                    const input = document.querySelector(`[name="q${q.id}"]`);
+                    userAnswer = input ? input.value : "";
+                    
+                    feedbackEl.className = "feedback-box manual";
+                    feedbackEl.innerHTML = `📝 <b>Silakan Periksa Mandiri</b><br>
+                                            Jawaban Kamu: <b>${userAnswer || "(Kosong)"}</b><br>
+                                            <span class="answer-key">Kunci Jawaban: ${q.answer}</span>`;
+                }
+
+                feedbackEl.style.display = "block";
+                const inputs = document.querySelectorAll(`[name="q${q.id}"]`);
+                inputs.forEach(inp => inp.disabled = true);
+            });
+
+            // Tampilkan Skor Akhir
+            const scoreBoard = document.getElementById('score-board');
+            const finalScoreEl = document.getElementById('final-score');
+            const finalValue = Math.round((score / maxScorePG) * 100);
+            
+            finalScoreEl.textContent = finalValue;
+            scoreBoard.style.display = "block";
+            document.getElementById('footer-action').style.display = "none";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        renderQuestions();
+    </script>
+</body>
+</html>
