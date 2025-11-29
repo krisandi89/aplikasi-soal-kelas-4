@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ujian Bahasa Indonesia Kelas 4 - SD Dilaraf Islamic School</title>
+    <style>
+        :root {
+            --primary: #c0392b; /* Warna Merah Bata */
+            --secondary: #e74c3c;
+            --bg-color: #fadbd8;
+            --card-bg: #ffffff;
+            --text: #2d3436;
+            --border: #dfe6e9;
+            --success: #27ae60;
+            --error: #c0392b;
+            --warning: #f1c40f;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            color: var(--text);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: var(--primary);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-bottom: 5px solid #922b21;
+        }
+
+        .header h1 { margin: 0; font-size: 1.8em; }
+        .header p { margin: 10px 0 0; opacity: 0.9; }
+
+        .question-list {
+            padding: 30px;
+        }
+
+        .question-item {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px dashed var(--border);
+        }
+
+        .q-number {
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .q-text {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .reading-text {
+            background-color: #fdfefe;
+            border: 1px solid #bdc3c7;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 0.95em;
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        /* Styles for Options */
+        .options-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .radio-label, .checkbox-label {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .radio-label:hover, .checkbox-label:hover {
+            background: #f5b7b1;
+            border-color: var(--primary);
+        }
+
+        input[type="radio"], input[type="checkbox"] {
+            margin-right: 12px;
+            transform: scale(1.2);
+        }
+
+        /* Styles for Text Inputs */
+        .input-text, .input-area {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #b2bec3;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+        
+        .input-area { min-height: 80px; resize: vertical; }
+
+        .input-text:focus, .input-area:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: #fdedec;
+        }
+
+        /* Result & Feedback Box */
+        .feedback-box {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none; /* Hidden initially */
+            background-color: #f1f2f6;
+            border-left: 5px solid #ccc;
+        }
+
+        .feedback-box.correct {
+            background-color: #d4edda;
+            border-left-color: var(--success);
+            color: #155724;
+        }
+
+        .feedback-box.wrong {
+            background-color: #f8d7da;
+            border-left-color: var(--error);
+            color: #721c24;
+        }
+
+        .feedback-box.manual {
+            background-color: #fff3cd;
+            border-left-color: #ffc107;
+            color: #856404;
+        }
+
+        .answer-key {
+            font-weight: bold;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .explanation {
+            font-size: 0.9em;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        /* Sticky Footer for Submit */
+        .footer-action {
+            background: #f1f2f6;
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            position: sticky;
+            bottom: 0;
+            box-shadow: 0 -5px 10px rgba(0,0,0,0.05);
+        }
+
+        .btn-submit {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .btn-submit:hover {
+            transform: scale(1.05);
+            background-color: #922b21;
+        }
+
+        .score-board {
+            text-align: center;
+            padding: 20px;
+            background: var(--secondary);
+            color: white;
+            display: none;
+            margin-bottom: 20px;
+            border-radius: 0 0 15px 15px;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            margin-top: 10px;
+            color: var(--bg-color);
+            text-decoration: underline;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>📖 Ujian Bahasa Indonesia</h1>
+            <p>Kelas 4 - SD Dilaraf Islamic School</p>
+        </div>
+
+        <div class="score-board" id="score-board">
+            <h2>Hasil Pengerjaan</h2>
+            <div style="font-size: 3em; font-weight: bold;" id="final-score">0</div>
+            <p>Nilai di atas hanya untuk soal Pilihan Ganda & Benar Salah.</p>
+            <p>Silakan periksa Isian & Uraian secara mandiri di bawah ini.</p>
+            <a href="index.html" class="back-btn">Kembali ke Menu Utama</a>
+        </div>
+
+        <div class="question-list" id="question-container">
+            <!-- Soal akan di-render di sini oleh JavaScript -->
+        </div>
+
+        <div class="footer-action" id="footer-action">
+            <button class="btn-submit" onclick="submitExam()">Kumpulkan Jawaban ✅</button>
+        </div>
+    </div>
+
+    <script>
+        // Database Soal Bahasa Indonesia (40 Soal)
+        const questions = [
+            // --- PG (1-8) ---
+            {
+                id: 1, type: 'pg',
+                text: "Gambar yang menunjukkan letak kota, jalan, atau lokasi suatu tempat disebut...",
+                options: ["Peta", "Denah", "Atlas", "Globe"],
+                answer: 1, hint: "Gambaran sederhana lokasi."
+            },
+            {
+                id: 2, type: 'pg',
+                text: "Jika kamu menghadap ke arah matahari terbit, maka punggungmu menghadap ke arah...",
+                options: ["Barat", "Timur", "Utara", "Selatan"],
+                answer: 0, hint: "Lawan dari Timur."
+            },
+            {
+                id: 3, type: 'pg',
+                text: "Alat yang digunakan untuk menunjukkan arah mata angin adalah...",
+                options: ["Jam Tangan", "Kompas", "Termometer", "Barometer"],
+                answer: 1, hint: "Alat yang jarumnya selalu menunjuk ke Utara."
+            },
+            {
+                id: 4, type: 'pg',
+                text: "Imbuhan 'ber-' pada kata 'bersepeda' memiliki makna...",
+                options: ["Mempunyai sepeda", "Memakai/mengendarai sepeda", "Berisi sepeda", "Mengeluarkan sepeda"],
+                answer: 1, hint: "Sedang menggunakan alat transportasi."
+            },
+            {
+                id: 5, type: 'pg',
+                text: "Lengkapi kalimat berikut dengan konjungsi yang tepat: <br>'Budi ingin bermain bola, ... hujan turun sangat deras.'",
+                options: ["dan", "tetapi", "atau", "sehingga"],
+                answer: 1, hint: "Konjungsi pertentangan."
+            },
+            {
+                id: 6, type: 'pg',
+                text: "Kalimat yang bertujuan untuk membujuk atau mengajak orang lain melakukan sesuatu disebut kalimat...",
+                options: ["Perintah", "Tanya", "Persuasif", "Berita"],
+                answer: 2, hint: "Sifatnya mengajak (Ayo, Mari)."
+            },
+            {
+                id: 7, type: 'pg',
+                text: "Ciri-ciri teks persuasif biasanya menggunakan kata...",
+                options: ["Jangan", "Dilarang", "Ayo dan Mari", "Apakah"],
+                answer: 2, hint: "Kata ajakan."
+            },
+            {
+                id: 8, type: 'pg',
+                text: "'Angin membelai rambutku dengan lembut.' Kalimat tersebut menggunakan majas...",
+                options: ["Metafora", "Hiperbola", "Personifikasi", "Asosiasi"],
+                answer: 2, hint: "Benda mati seolah hidup/punya sifat manusia."
+            },
+
+            // --- PG KOMPLEKS (9-20) ---
+            // Teks untuk soal 9-10
+            {
+                id: 9, type: 'pg_kompleks',
+                text: "<div class='reading-text'><b>Tari Saman</b><br>Tari Saman adalah tarian suku Gayo dari Aceh. Tarian ini mencerminkan pendidikan, keagamaan, sopan santun, kepahlawanan, kekompakan dan kebersamaan. Ciri khas tari saman adalah gerakan tangan yang cepat dan serentak tanpa iringan musik, melainkan menggunakan suara penari.</div>Berdasarkan teks di atas, manakah yang termasuk gagasan pokok? (Pilih 2 jawaban)",
+                options: ["Tari Saman berasal dari suku Gayo, Aceh", "Tarian ini mencerminkan kekompakan dan kebersamaan", "Gerakan tangan penari sangat lambat", "Tari Saman menggunakan alat musik gitar"],
+                answer: [0, 1], hint: "Ide utama tentang asal dan makna tarian."
+            },
+            {
+                id: 10, type: 'pg_kompleks',
+                text: "Berdasarkan teks 'Tari Saman' di atas, ciri khas tarian ini adalah... (Pilih 2 jawaban)",
+                options: ["Menggunakan iringan musik orkestra", "Gerakan tangan yang cepat", "Menggunakan suara dari para penari", "Penari menari sendiri-sendiri"],
+                answer: [1, 2], hint: "Cek kalimat terakhir."
+            },
+            // Teks untuk soal 11-15 (Wawancara)
+            {
+                id: 11, type: 'pg_kompleks',
+                text: "<div class='reading-text'><b>Wawancara dengan Petani</b><br>Siswa: 'Selamat pagi, Pak. Tanaman apa saja yang Bapak tanam?'<br>Petani: 'Pagi, Nak. Bapak menanam padi dan jagung.'<br>Siswa: 'Kapan Bapak mulai menanam?'<br>Petani: 'Biasanya saat awal musim hujan.'</div>Siapakah yang berperan sebagai pewawancara dan narasumber? (Pilih 2 jawaban)",
+                options: ["Pewawancara adalah Siswa", "Narasumber adalah Siswa", "Narasumber adalah Petani", "Pewawancara adalah Petani"],
+                answer: [0, 2], hint: "Pewawancara yang bertanya, Narasumber yang menjawab."
+            },
+            {
+                id: 12, type: 'pg_kompleks',
+                text: "Apa saja tanaman yang ditanam oleh petani dalam teks di atas? (Pilih 2 jawaban)",
+                options: ["Padi", "Gandum", "Jagung", "Kedelai"],
+                answer: [0, 2], hint: "Baca jawaban petani."
+            },
+            {
+                id: 13, type: 'pg_kompleks',
+                text: "Informasi apa yang didapat dari wawancara tersebut? (Pilih 2 jawaban)",
+                options: ["Jenis tanaman yang ditanam", "Harga beras di pasar", "Waktu menanam padi", "Nama lengkap petani"],
+                answer: [0, 2], hint: "Jenis tanaman dan waktu tanam."
+            },
+            {
+                id: 14, type: 'pg_kompleks',
+                text: "Sikap yang baik saat melakukan wawancara adalah... (Pilih 2 jawaban)",
+                options: ["Menggunakan bahasa yang sopan", "Memotong pembicaraan narasumber", "Mencatat poin-poin penting", "Datang terlambat"],
+                answer: [0, 2], hint: "Sopan dan menyimak."
+            },
+            {
+                id: 15, type: 'pg_kompleks',
+                text: "Kata tanya yang digunakan siswa dalam wawancara di atas adalah... (Pilih 2 jawaban)",
+                options: ["Apa", "Siapa", "Kapan", "Dimana"],
+                answer: [0, 2], hint: "Cek kalimat tanya siswa."
+            },
+            {
+                id: 16, type: 'pg_kompleks',
+                text: "Contoh kalimat yang mengandung majas personifikasi adalah... (Pilih 2 jawaban)",
+                options: ["Pena itu menari-nari di atas kertas", "Suaranya menggelegar membelah angkasa", "Ombak berkejar-kejaran di pantai", "Wajahnya bersinar seperti bulan"],
+                answer: [0, 2], hint: "Benda mati melakukan hal seperti manusia."
+            },
+            {
+                id: 17, type: 'pg_kompleks',
+                text: "Tujuan dari teks deskripsi adalah... (Pilih 2 jawaban)",
+                options: ["Menggambarkan suatu objek secara jelas", "Mengajak orang membeli sesuatu", "Melaporkan berita terkini", "Membuat pembaca seolah melihat/merasakan objek tersebut"],
+                answer: [0, 3], hint: "Menggambarkan objek."
+            },
+            {
+                id: 18, type: 'pg_kompleks',
+                text: "Contoh kata berimbuhan 'ber-' yang bermakna 'memiliki' adalah... (Pilih 2 jawaban)",
+                options: ["Beruang (punya uang)", "Berlari", "Berkaki empat", "Bermain"],
+                answer: [0, 2], hint: "Beruang (kaya) dan Berkaki."
+            },
+            {
+                id: 19, type: 'pg_kompleks',
+                text: "Yang termasuk unsur-unsur dalam denah adalah... (Pilih 2 jawaban)",
+                options: ["Arah mata angin", "Daftar harga", "Nama jalan/bangunan", "Foto selfie"],
+                answer: [0, 2], hint: "Komponen penting denah."
+            },
+            {
+                id: 20, type: 'pg_kompleks',
+                text: "Manakah yang merupakan kalimat ajakan (persuasif)? (Pilih 2 jawaban)",
+                options: ["Buanglah sampah pada tempatnya!", "Apakah kamu sudah makan?", "Ayo kita jaga kebersihan kelas!", "Kemarin hujan turun deras."],
+                answer: [0, 2], hint: "Berisi perintah halus atau ajakan."
+            },
+
+            // --- MEMASANGKAN / BENAR SALAH (21-30) ---
+            {
+                id: 21, type: 'bs',
+                text: "Fungsi denah adalah untuk memudahkan mencari lokasi suatu tempat.",
+                answer: "Benar", hint: "Fungsi utama denah."
+            },
+            {
+                id: 22, type: 'bs',
+                text: "Matahari terbenam di sebelah Timur.",
+                answer: "Salah", hint: "Terbenam di Barat."
+            },
+            {
+                id: 23, type: 'bs',
+                text: "Narasumber adalah orang yang memberikan informasi saat wawancara.",
+                answer: "Benar", hint: "Orang yang ditanya."
+            },
+            {
+                id: 24, type: 'bs',
+                text: "Kalimat 'Awan menangis meneteskan air mata' adalah contoh majas Hiperbola.",
+                answer: "Salah", hint: "Itu Personifikasi (Awan menangis)."
+            },
+            {
+                id: 25, type: 'bs',
+                text: "Kata 'Berpayung' memiliki makna 'memakai payung'.",
+                answer: "Benar", hint: "Imbuhan ber- bermakna memakai."
+            },
+            {
+                id: 26, type: 'bs',
+                text: "Ide pokok biasanya terdapat di awal atau akhir paragraf.",
+                answer: "Benar", hint: "Kalimat utama."
+            },
+            {
+                id: 27, type: 'bs',
+                text: "Teks informatif bertujuan untuk menghibur pembaca dengan cerita khayalan.",
+                answer: "Salah", hint: "Informatif berisi fakta/info."
+            },
+            {
+                id: 28, type: 'bs',
+                text: "Sebelum wawancara, kita sebaiknya membuat daftar pertanyaan terlebih dahulu.",
+                answer: "Benar", hint: "Agar wawancara lancar."
+            },
+            {
+                id: 29, type: 'bs',
+                text: "Mata angin utama terdiri dari Utara, Selatan, Barat, dan Timur.",
+                answer: "Benar", hint: "4 arah utama."
+            },
+            {
+                id: 30, type: 'bs',
+                text: "Kata hubung 'lalu' dan 'kemudian' menunjukkan urutan waktu.",
+                answer: "Benar", hint: "Konjungsi waktu."
+            },
+
+            // --- ISIAN SINGKAT (31-35) ---
+            {
+                id: 31, type: 'isian',
+                text: "Kalimat yang berisi ajakan atau bujukan disebut kalimat...",
+                answer: "Persuasif", hint: "Membujuk."
+            },
+            {
+                id: 32, type: 'isian',
+                text: "Gaya bahasa yang mengumpamakan benda mati seolah-olah hidup disebut majas...",
+                answer: "Personifikasi", hint: "Person = Orang/Manusia."
+            },
+            {
+                id: 33, type: 'isian',
+                text: "Orang yang mengajukan pertanyaan dalam kegiatan wawancara disebut...",
+                answer: "Pewawancara", hint: "Orang yang mewawancarai."
+            },
+            {
+                id: 34, type: 'isian',
+                text: "Lengkapi kalimat: Adik menangis ... mainannya rusak.",
+                answer: "Karena", hint: "Menyatakan sebab."
+            },
+            {
+                id: 35, type: 'isian',
+                text: "Kata hubung yang menunjukkan waktu (seperti: setelah itu, sesudah) disebut konjungsi...",
+                answer: "Waktu", hint: "Berkaitan dengan jam/masa."
+            },
+
+            // --- URAIAN (36-40) ---
+            {
+                id: 36, type: 'uraian',
+                text: "Jelaskan pengertian dari Denah!",
+                answer: "Gambaran sederhana tentang letak suatu tempat atau ruangan.", hint: "Gambar lokasi."
+            },
+            {
+                id: 37, type: 'uraian',
+                text: "Jelaskan perbedaan Gagasan Pokok dan Gagasan Pendukung!",
+                answer: "Gagasan pokok adalah inti paragraf, gagasan pendukung adalah penjelasnya.", hint: "Inti vs Penjelas."
+            },
+            {
+                id: 38, type: 'uraian',
+                text: "Apa perbedaan antara Pewawancara dan Narasumber?",
+                answer: "Pewawancara yang bertanya, Narasumber yang menjawab/memberi info.", hint: "Tanya vs Jawab."
+            },
+            {
+                id: 39, type: 'uraian',
+                text: "Buatlah 3 contoh kalimat persuasif (ajakan)!",
+                answer: "1. Ayo buang sampah pada tempatnya. 2. Mari kita belajar dengan giat. 3. Yuk hemat air.", hint: "Gunakan kata Ayo/Mari."
+            },
+            {
+                id: 40, type: 'uraian',
+                text: "Sebutkan 3 hal yang harus disiapkan sebelum melakukan wawancara!",
+                answer: "1. Menentukan tema. 2. Membuat daftar pertanyaan. 3. Menyiapkan alat tulis/rekam.", hint: "Persiapan wawancara."
+            }
+        ];
+
+        const container = document.getElementById('question-container');
+
+        // 1. RENDER SOAL
+        function renderQuestions() {
+            let html = "";
+            questions.forEach((q, index) => {
+                let inputHtml = "";
+                let qNum = index + 1;
+
+                if (q.type === 'pg' || q.type === 'bs') {
+                    // Pilihan Ganda & Benar Salah
+                    let options = q.type === 'bs' ? ["Benar", "Salah"] : q.options;
+                    
+                    options.forEach((opt, i) => {
+                        let val = q.type === 'bs' ? opt : i; 
+                        inputHtml += `
+                            <label class="radio-label">
+                                <input type="radio" name="q${q.id}" value="${val}">
+                                ${q.type === 'pg' ? String.fromCharCode(65+i) + '. ' : ''} ${opt}
+                            </label>
+                        `;
+                    });
+                } 
+                else if (q.type === 'pg_kompleks') {
+                    // Checkbox
+                    q.options.forEach((opt, i) => {
+                        inputHtml += `
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="q${q.id}" value="${i}">
+                                ${opt}
+                            </label>
+                        `;
+                    });
+                }
+                else if (q.type === 'isian') {
+                    // Input Text Pendek
+                    inputHtml = `<input type="text" class="input-text" name="q${q.id}" placeholder="Ketik jawabanmu..." autocomplete="off">`;
+                }
+                else if (q.type === 'uraian') {
+                    // Textarea
+                    inputHtml = `<textarea class="input-area" name="q${q.id}" placeholder="Tulis jawaban lengkapmu di sini..."></textarea>`;
+                }
+
+                html += `
+                    <div class="question-item" id="q-block-${q.id}">
+                        <span class="q-number">Soal No. ${qNum}</span>
+                        ${q.text.includes('<div') ? q.text : `<div class="q-text">${q.text}</div>`}
+                        <div class="options-group">
+                            ${inputHtml}
+                        </div>
+                        <div class="feedback-box" id="feedback-${q.id}"></div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        // 2. FUNGSI SUBMIT & NILAI
+        function submitExam() {
+            let score = 0;
+            let maxScorePG = 0; 
+            
+            questions.forEach(q => {
+                const feedbackEl = document.getElementById(`feedback-${q.id}`);
+                let isCorrect = false;
+                let userAnswer = "-";
+                
+                // --- LOGIKA PENILAIAN ---
+                if (q.type === 'pg' || q.type === 'bs') {
+                    maxScorePG++;
+                    const selected = document.querySelector(`input[name="q${q.id}"]:checked`);
+                    if (selected) {
+                        userAnswer = selected.value;
+                        let valToCheck = q.type === 'pg' ? parseInt(userAnswer) : userAnswer;
+                        if (valToCheck === q.answer) isCorrect = true;
+                    }
+
+                    if (isCorrect) {
+                        score++;
+                        feedbackEl.className = "feedback-box correct";
+                        feedbackEl.innerHTML = `✅ <b>Jawaban Benar!</b>`;
+                    } else {
+                        feedbackEl.className = "feedback-box wrong";
+                        let correctText = (q.type === 'pg') ? q.options[q.answer] : q.answer;
+                        feedbackEl.innerHTML = `❌ <b>Jawaban Kurang Tepat.</b><br>
+                                                <span class="answer-key">Kunci Jawaban: ${correctText}</span>
+                                                <div class="explanation">Hint: ${q.hint}</div>`;
+                    }
+                } 
+                else if (q.type === 'pg_kompleks') {
+                    maxScorePG++;
+                    const checkedBoxes = document.querySelectorAll(`input[name="q${q.id}"]:checked`);
+                    let userIndices = Array.from(checkedBoxes).map(cb => parseInt(cb.value)).sort();
+                    let correctIndices = [...q.answer].sort();
+                    
+                    if (JSON.stringify(userIndices) === JSON.stringify(correctIndices)) {
+                        isCorrect = true;
+                        score++;
+                        feedbackEl.className = "feedback-box correct";
+                        feedbackEl.innerHTML = `✅ <b>Jawaban Benar!</b>`;
+                    } else {
+                        feedbackEl.className = "feedback-box wrong";
+                        let correctText = q.answer.map(idx => "• " + q.options[idx]).join("<br>");
+                        feedbackEl.innerHTML = `❌ <b>Jawaban Kurang Tepat.</b><br>
+                                                <span class="answer-key">Seharusnya memilih:</span><br>${correctText}
+                                                <div class="explanation">Hint: ${q.hint}</div>`;
+                    }
+                }
+                else if (q.type === 'isian' || q.type === 'uraian') {
+                    // Manual Review
+                    const input = document.querySelector(`[name="q${q.id}"]`);
+                    userAnswer = input ? input.value : "";
+                    
+                    feedbackEl.className = "feedback-box manual";
+                    feedbackEl.innerHTML = `📝 <b>Silakan Periksa Mandiri</b><br>
+                                            Jawaban Kamu: <b>${userAnswer || "(Kosong)"}</b><br>
+                                            <span class="answer-key">Kunci Jawaban: ${q.answer}</span>`;
+                }
+
+                feedbackEl.style.display = "block";
+                const inputs = document.querySelectorAll(`[name="q${q.id}"]`);
+                inputs.forEach(inp => inp.disabled = true);
+            });
+
+            // Tampilkan Skor Akhir
+            const scoreBoard = document.getElementById('score-board');
+            const finalScoreEl = document.getElementById('final-score');
+            const finalValue = Math.round((score / maxScorePG) * 100);
+            
+            finalScoreEl.textContent = finalValue;
+            scoreBoard.style.display = "block";
+            document.getElementById('footer-action').style.display = "none";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        renderQuestions();
+    </script>
+</body>
+</html>
