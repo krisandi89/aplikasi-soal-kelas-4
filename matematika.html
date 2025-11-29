@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ujian Matematika Kelas 4 - SD Dilaraf Islamic School</title>
+    <style>
+        :root {
+            --primary: #2980b9; /* Warna Biru Matematika */
+            --secondary: #3498db;
+            --bg-color: #eaf2f8;
+            --card-bg: #ffffff;
+            --text: #2c3e50;
+            --border: #bdc3c7;
+            --success: #27ae60;
+            --error: #c0392b;
+            --warning: #f39c12;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            color: var(--text);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: var(--primary);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-bottom: 5px solid #1a5276;
+        }
+
+        .header h1 { margin: 0; font-size: 1.8em; }
+        .header p { margin: 10px 0 0; opacity: 0.9; }
+
+        .question-list {
+            padding: 30px;
+        }
+
+        .question-item {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px dashed var(--border);
+        }
+
+        .q-number {
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .q-text {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .img-placeholder {
+            background: #ecf0f1;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-style: italic;
+            color: #7f8c8d;
+            border: 2px dashed #bdc3c7;
+        }
+
+        /* Styles for Options */
+        .options-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .radio-label, .checkbox-label {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .radio-label:hover, .checkbox-label:hover {
+            background: #d6eaf8;
+            border-color: var(--primary);
+        }
+
+        input[type="radio"], input[type="checkbox"] {
+            margin-right: 12px;
+            transform: scale(1.2);
+        }
+
+        /* Styles for Text Inputs */
+        .input-text, .input-area {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #b2bec3;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+        
+        .input-area { min-height: 80px; resize: vertical; }
+
+        .input-text:focus, .input-area:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: #ebf5fb;
+        }
+
+        /* Result & Feedback Box */
+        .feedback-box {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none; /* Hidden initially */
+            background-color: #f1f2f6;
+            border-left: 5px solid #ccc;
+        }
+
+        .feedback-box.correct {
+            background-color: #d4edda;
+            border-left-color: var(--success);
+            color: #155724;
+        }
+
+        .feedback-box.wrong {
+            background-color: #f8d7da;
+            border-left-color: var(--error);
+            color: #721c24;
+        }
+
+        .feedback-box.manual {
+            background-color: #fff3cd;
+            border-left-color: #ffc107;
+            color: #856404;
+        }
+
+        .answer-key {
+            font-weight: bold;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .explanation {
+            font-size: 0.9em;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        /* Sticky Footer for Submit */
+        .footer-action {
+            background: #f1f2f6;
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            position: sticky;
+            bottom: 0;
+            box-shadow: 0 -5px 10px rgba(0,0,0,0.05);
+        }
+
+        .btn-submit {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .btn-submit:hover {
+            transform: scale(1.05);
+            background-color: #1a5276;
+        }
+
+        .score-board {
+            text-align: center;
+            padding: 20px;
+            background: var(--secondary);
+            color: white;
+            display: none;
+            margin-bottom: 20px;
+            border-radius: 0 0 15px 15px;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            margin-top: 10px;
+            color: var(--bg-color);
+            text-decoration: underline;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>➗ Ujian Matematika</h1>
+            <p>Kelas 4 - SD Dilaraf Islamic School</p>
+        </div>
+
+        <div class="score-board" id="score-board">
+            <h2>Hasil Pengerjaan</h2>
+            <div style="font-size: 3em; font-weight: bold;" id="final-score">0</div>
+            <p>Nilai di atas hanya untuk soal Pilihan Ganda & Benar Salah.</p>
+            <p>Silakan periksa Isian & Uraian secara mandiri di bawah ini.</p>
+            <a href="index.html" class="back-btn">Kembali ke Menu Utama</a>
+        </div>
+
+        <div class="question-list" id="question-container">
+            <!-- Soal akan di-render di sini oleh JavaScript -->
+        </div>
+
+        <div class="footer-action" id="footer-action">
+            <button class="btn-submit" onclick="submitExam()">Kumpulkan Jawaban ✅</button>
+        </div>
+    </div>
+
+    <script>
+        // Database Soal Matematika (40 Soal)
+        const questions = [
+            // --- PG (1-10) : Pecahan & Pola Bilangan ---
+            {
+                id: 1, type: 'pg',
+                text: "Sebuah lingkaran dibagi menjadi 4 bagian sama besar. Jika 1 bagian diarsir, maka nilai pecahannya adalah...",
+                options: ["1/2", "1/4", "3/4", "4/4"],
+                answer: 1, hint: "1 bagian dari 4 total bagian."
+            },
+            {
+                id: 2, type: 'pg',
+                text: "Bentuk desimal dari pecahan 1/2 adalah...",
+                options: ["0,2", "0,5", "0,25", "0,1"],
+                answer: 1, hint: "Satu dibagi dua sama dengan setengah."
+            },
+            {
+                id: 3, type: 'pg',
+                text: "Pecahan 25/100 jika diubah menjadi bentuk desimal adalah...",
+                options: ["0,25", "2,5", "0,025", "25,0"],
+                answer: 0, hint: "Dua angka di belakang koma."
+            },
+            {
+                id: 4, type: 'pg',
+                text: "Bentuk persen dari pecahan 3/4 adalah...",
+                options: ["25%", "50%", "75%", "100%"],
+                answer: 2, hint: "3 dibagi 4 dikali 100."
+            },
+            {
+                id: 5, type: 'pg',
+                text: "Perhatikan pola gambar berikut: O, OO, OOO. Gambar selanjutnya terdiri dari ... lingkaran.",
+                options: ["4", "5", "6", "3"],
+                answer: 0, hint: "Bertambah 1 setiap langkah."
+            },
+            {
+                id: 6, type: 'pg',
+                text: "Bilangan berikut yang merupakan bilangan ganjil adalah...",
+                options: ["12", "24", "31", "50"],
+                answer: 2, hint: "Bilangan yang tidak habis dibagi 2 (ekornya 1, 3, 5, 7, 9)."
+            },
+            {
+                id: 7, type: 'pg',
+                text: "Pola bilangan: 2, 4, 6, 8, ... Bilangan selanjutnya adalah...",
+                options: ["9", "10", "11", "12"],
+                answer: 1, hint: "Ditambah 2 terus."
+            },
+            {
+                id: 8, type: 'pg',
+                text: "Ibu membeli kue dan memotongnya menjadi 10 bagian. Jika adik makan 3 bagian, berapa nilai desimal kue yang dimakan adik?",
+                options: ["0,3", "0,7", "3,0", "0,03"],
+                answer: 0, hint: "3 per 10."
+            },
+            {
+                id: 9, type: 'pg',
+                text: "Manakah tanda yang tepat untuk membandingkan 1/5 ... 1/2 ?",
+                options: [">", "<", "=", "+"],
+                answer: 1, hint: "Potongan 1/5 lebih kecil daripada 1/2."
+            },
+            {
+                id: 10, type: 'pg',
+                text: "Pola bilangan: 20, 18, 16, 14, ... adalah pola bilangan...",
+                options: ["Bertambah 2", "Berkurang 2", "Dikali 2", "Dibagi 2"],
+                answer: 1, hint: "Angkanya makin kecil."
+            },
+
+            // --- PG KOMPLEKS (11-20) ---
+            {
+                id: 11, type: 'pg_kompleks',
+                text: "Manakah pecahan yang senilai dengan 1/2? (Pilih 2 jawaban)",
+                options: ["2/4", "3/6", "1/3", "4/5"],
+                answer: [0, 1], hint: "Cari yang jika disederhanakan hasilnya 1/2."
+            },
+            {
+                id: 12, type: 'pg_kompleks',
+                text: "Pilihlah bilangan yang termasuk bilangan GENAP! (Pilih 2 jawaban)",
+                options: ["15", "28", "37", "42"],
+                answer: [1, 3], hint: "Habis dibagi 2."
+            },
+            {
+                id: 13, type: 'pg_kompleks',
+                text: "Ciri-ciri pecahan desimal persepuluhan adalah... (Pilih 2 jawaban)",
+                options: ["Ada satu angka di belakang koma", "Penyebutnya 10", "Penyebutnya 100", "Ada dua angka di belakang koma"],
+                answer: [0, 1], hint: "Contohnya 0,5 atau 5/10."
+            },
+            {
+                id: 14, type: 'pg_kompleks',
+                text: "Manakah pernyataan yang BENAR tentang pola bilangan 5, 10, 15, 20? (Pilih 2 jawaban)",
+                options: ["Merupakan pola bilangan bertambah 5", "Merupakan kelipatan 5", "Merupakan pola bilangan berkurang", "Bilangan selanjutnya adalah 22"],
+                answer: [0, 1], hint: "Loncat 5."
+            },
+            {
+                id: 15, type: 'pg_kompleks',
+                text: "Bentuk persen yang nilainya lebih besar dari 50% adalah... (Pilih 2 jawaban)",
+                options: ["25%", "75%", "10%", "90%"],
+                answer: [1, 3], hint: "Cari angka di atas 50."
+            },
+            {
+                id: 16, type: 'pg_kompleks',
+                text: "Perbandingan pecahan yang benar adalah... (Pilih 2 jawaban)",
+                options: ["1/4 < 1/2", "3/4 > 1/4", "1/2 < 1/4", "2/4 < 1/4"],
+                answer: [0, 1], hint: "Bayangkan potongan pizza."
+            },
+            {
+                id: 17, type: 'pg_kompleks',
+                text: "Pilihlah 2 bilangan ganjil yang lebih besar dari 20!",
+                options: ["21", "22", "25", "30"],
+                answer: [0, 2], hint: "Ganjil dan > 20."
+            },
+            {
+                id: 18, type: 'pg_kompleks',
+                text: "Jika 1 = 100%, maka... (Pilih 2 jawaban)",
+                options: ["1/2 = 50%", "1/4 = 25%", "1/2 = 20%", "1/4 = 40%"],
+                answer: [0, 1], hint: "Setengah itu 50, seperempat itu 25."
+            },
+            {
+                id: 19, type: 'pg_kompleks',
+                text: "Pola bilangan turun (berkurang) ditunjukkan oleh... (Pilih 2 jawaban)",
+                options: ["100, 90, 80, 70", "1, 2, 3, 4", "50, 45, 40, 35", "5, 10, 15, 20"],
+                answer: [0, 2], hint: "Angkanya makin kecil."
+            },
+            {
+                id: 20, type: 'pg_kompleks',
+                text: "Nilai pecahan desimal perseratusan ditunjukkan oleh... (Pilih 2 jawaban)",
+                options: ["0,05", "0,2", "0,75", "0,1"],
+                answer: [0, 2], hint: "Dua angka di belakang koma."
+            },
+
+            // --- BENAR / SALAH (21-30) ---
+            {
+                id: 21, type: 'bs',
+                text: "1/2 lebih besar dari 1/4.",
+                answer: "Benar", hint: "Setengah kue lebih banyak dari seperempat."
+            },
+            {
+                id: 22, type: 'bs',
+                text: "Angka 13 adalah bilangan genap.",
+                answer: "Salah", hint: "13 tidak bisa dibagi 2 rata."
+            },
+            {
+                id: 23, type: 'bs',
+                text: "Bentuk desimal dari 7/10 adalah 0,07.",
+                answer: "Salah", hint: "Harusnya 0,7."
+            },
+            {
+                id: 24, type: 'bs',
+                text: "Pola bilangan 3, 6, 9, 12 adalah pola bertambah 3.",
+                answer: "Benar", hint: "Perkalian 3."
+            },
+            {
+                id: 25, type: 'bs',
+                text: "25% sama nilainya dengan 1/4.",
+                answer: "Benar", hint: "25 per 100 disederhanakan."
+            },
+            {
+                id: 26, type: 'bs',
+                text: "Bilangan 0,15 dibaca 'nol koma satu lima'.",
+                answer: "Benar", hint: "Cara membaca desimal."
+            },
+            {
+                id: 27, type: 'bs',
+                text: "Dalam pola gambar segitiga: 1, 3, 6, bilangan selanjutnya adalah 8.",
+                answer: "Salah", hint: "Selanjutnya 10 (tambah 4)."
+            },
+            {
+                id: 28, type: 'bs',
+                text: "Pecahan 2/4 senilai dengan 1/2.",
+                answer: "Benar", hint: "Sama-sama setengah."
+            },
+            {
+                id: 29, type: 'bs',
+                text: "Bilangan ganjil ditambah bilangan ganjil hasilnya bilangan ganjil.",
+                answer: "Salah", hint: "1 + 1 = 2 (Genap)."
+            },
+            {
+                id: 30, type: 'bs',
+                text: "Persen artinya perseratus.",
+                answer: "Benar", hint: "Arti kata persen."
+            },
+
+            // --- ISIAN SINGKAT (31-35) ---
+            {
+                id: 31, type: 'isian',
+                text: "Lanjutkan pola bilangan berikut: 5, 10, 15, ...",
+                answer: "20", hint: "Tambah 5."
+            },
+            {
+                id: 32, type: 'isian',
+                text: "Ubahlah 0,5 menjadi pecahan biasa paling sederhana!",
+                answer: "1/2", hint: "Satu per dua."
+            },
+            {
+                id: 33, type: 'isian',
+                text: "Berapa persen nilai dari 1/2?",
+                answer: "50%", hint: "Setengah dari 100."
+            },
+            {
+                id: 34, type: 'isian',
+                text: "Pola bilangan: 50, 48, 46, ... Bilangan selanjutnya adalah...",
+                answer: "44", hint: "Kurangi 2."
+            },
+            {
+                id: 35, type: 'isian',
+                text: "Suku ke-5 dari pola bilangan 2, 4, 6, 8, ... adalah...",
+                answer: "10", hint: "Bilangan genap ke-5."
+            },
+
+            // --- URAIAN (36-40) ---
+            {
+                id: 36, type: 'uraian',
+                text: "Ibu membeli pizza dipotong menjadi 8 bagian. Ayah makan 2 bagian, Adik makan 1 bagian. Berapa bagian sisa pizza dalam bentuk pecahan?",
+                answer: "5/8", hint: "8 dikurang 2 dikurang 1."
+            },
+            {
+                id: 37, type: 'uraian',
+                text: "Andi menyusun kelereng dengan pola: Baris pertama 1, baris kedua 3, baris ketiga 5. Berapa kelereng di baris keempat? Jelaskan polanya!",
+                answer: "7 kelereng. Polanya adalah bilangan ganjil (tambah 2).", hint: "1, 3, 5, ..."
+            },
+            {
+                id: 38, type: 'uraian',
+                text: "Urutkan pecahan berikut dari yang terkecil: 1/2, 1/4, 1/8!",
+                answer: "1/8, 1/4, 1/2", hint: "Semakin besar penyebut, semakin kecil nilainya."
+            },
+            {
+                id: 39, type: 'uraian',
+                text: "Ubahlah pecahan 3/4 menjadi bentuk desimal dan persen!",
+                answer: "Desimal: 0,75. Persen: 75%", hint: "3 dibagi 4."
+            },
+            {
+                id: 40, type: 'uraian',
+                text: "Lengkapilah pola berikut: 100, 95, 90, ..., 80. Bilangan berapakah yang hilang?",
+                answer: "85", hint: "Antara 90 dan 80."
+            }
+        ];
+
+        const container = document.getElementById('question-container');
+
+        // 1. RENDER SOAL
+        function renderQuestions() {
+            let html = "";
+            questions.forEach((q, index) => {
+                let inputHtml = "";
+                let qNum = index + 1;
+
+                if (q.type === 'pg' || q.type === 'bs') {
+                    // Pilihan Ganda & Benar Salah
+                    let options = q.type === 'bs' ? ["Benar", "Salah"] : q.options;
+                    
+                    options.forEach((opt, i) => {
+                        let val = q.type === 'bs' ? opt : i; 
+                        inputHtml += `
+                            <label class="radio-label">
+                                <input type="radio" name="q${q.id}" value="${val}">
+                                ${q.type === 'pg' ? String.fromCharCode(65+i) + '. ' : ''} ${opt}
+                            </label>
+                        `;
+                    });
+                } 
+                else if (q.type === 'pg_kompleks') {
+                    // Checkbox
+                    q.options.forEach((opt, i) => {
+                        inputHtml += `
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="q${q.id}" value="${i}">
+                                ${opt}
+                            </label>
+                        `;
+                    });
+                }
+                else if (q.type === 'isian') {
+                    // Input Text Pendek
+                    inputHtml = `<input type="text" class="input-text" name="q${q.id}" placeholder="Ketik jawabanmu..." autocomplete="off">`;
+                }
+                else if (q.type === 'uraian') {
+                    // Textarea
+                    inputHtml = `<textarea class="input-area" name="q${q.id}" placeholder="Tulis jawaban lengkapmu di sini..."></textarea>`;
+                }
+
+                html += `
+                    <div class="question-item" id="q-block-${q.id}">
+                        <span class="q-number">Soal No. ${qNum}</span>
+                        <div class="q-text">${q.text}</div>
+                        <div class="options-group">
+                            ${inputHtml}
+                        </div>
+                        <div class="feedback-box" id="feedback-${q.id}"></div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        // 2. FUNGSI SUBMIT & NILAI
+        function submitExam() {
+            let score = 0;
+            let maxScorePG = 0; 
+            
+            questions.forEach(q => {
+                const feedbackEl = document.getElementById(`feedback-${q.id}`);
+                let isCorrect = false;
+                let userAnswer = "-";
+                
+                // --- LOGIKA PENILAIAN ---
+                if (q.type === 'pg' || q.type === 'bs') {
+                    maxScorePG++;
+                    const selected = document.querySelector(`input[name="q${q.id}"]:checked`);
+                    if (selected) {
+                        userAnswer = selected.value;
+                        let valToCheck = q.type === 'pg' ? parseInt(userAnswer) : userAnswer;
+                        if (valToCheck === q.answer) isCorrect = true;
+                    }
+
+                    if (isCorrect) {
+                        score++;
+                        feedbackEl.className = "feedback-box correct";
+                        feedbackEl.innerHTML = `✅ <b>Jawaban Benar!</b>`;
+                    } else {
+                        feedbackEl.className = "feedback-box wrong";
+                        let correctText = (q.type === 'pg') ? q.options[q.answer] : q.answer;
+                        feedbackEl.innerHTML = `❌ <b>Jawaban Kurang Tepat.</b><br>
+                                                <span class="answer-key">Kunci Jawaban: ${correctText}</span>
+                                                <div class="explanation">Hint: ${q.hint}</div>`;
+                    }
+                } 
+                else if (q.type === 'pg_kompleks') {
+                    maxScorePG++;
+                    const checkedBoxes = document.querySelectorAll(`input[name="q${q.id}"]:checked`);
+                    let userIndices = Array.from(checkedBoxes).map(cb => parseInt(cb.value)).sort();
+                    let correctIndices = [...q.answer].sort();
+                    
+                    if (JSON.stringify(userIndices) === JSON.stringify(correctIndices)) {
+                        isCorrect = true;
+                        score++;
+                        feedbackEl.className = "feedback-box correct";
+                        feedbackEl.innerHTML = `✅ <b>Jawaban Benar!</b>`;
+                    } else {
+                        feedbackEl.className = "feedback-box wrong";
+                        let correctText = q.answer.map(idx => "• " + q.options[idx]).join("<br>");
+                        feedbackEl.innerHTML = `❌ <b>Jawaban Kurang Tepat.</b><br>
+                                                <span class="answer-key">Seharusnya memilih:</span><br>${correctText}
+                                                <div class="explanation">Hint: ${q.hint}</div>`;
+                    }
+                }
+                else if (q.type === 'isian' || q.type === 'uraian') {
+                    // Manual Review
+                    const input = document.querySelector(`[name="q${q.id}"]`);
+                    userAnswer = input ? input.value : "";
+                    
+                    feedbackEl.className = "feedback-box manual";
+                    feedbackEl.innerHTML = `📝 <b>Silakan Periksa Mandiri</b><br>
+                                            Jawaban Kamu: <b>${userAnswer || "(Kosong)"}</b><br>
+                                            <span class="answer-key">Kunci Jawaban: ${q.answer}</span>`;
+                }
+
+                feedbackEl.style.display = "block";
+                const inputs = document.querySelectorAll(`[name="q${q.id}"]`);
+                inputs.forEach(inp => inp.disabled = true);
+            });
+
+            // Tampilkan Skor Akhir
+            const scoreBoard = document.getElementById('score-board');
+            const finalScoreEl = document.getElementById('final-score');
+            const finalValue = Math.round((score / maxScorePG) * 100);
+            
+            finalScoreEl.textContent = finalValue;
+            scoreBoard.style.display = "block";
+            document.getElementById('footer-action').style.display = "none";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        renderQuestions();
+    </script>
+</body>
+</html>
