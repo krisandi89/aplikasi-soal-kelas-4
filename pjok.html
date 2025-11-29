@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ujian PJOK Kelas 4 - SD Dilaraf Islamic School</title>
+    <style>
+        :root {
+            --primary: #e67e22; /* Warna Oranye Sporty */
+            --secondary: #d35400;
+            --bg-color: #fef5e7;
+            --card-bg: #ffffff;
+            --text: #2d3436;
+            --border: #fae5d3;
+            --success: #27ae60;
+            --error: #c0392b;
+            --warning: #f1c40f;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            color: var(--text);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: var(--primary);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-bottom: 5px solid #a04000;
+        }
+
+        .header h1 { margin: 0; font-size: 1.8em; }
+        .header p { margin: 10px 0 0; opacity: 0.9; }
+
+        .question-list {
+            padding: 30px;
+        }
+
+        .question-item {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px dashed var(--border);
+        }
+
+        .q-number {
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .q-text {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        /* Styles for Options */
+        .options-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .radio-label, .checkbox-label {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            background: #fff;
+            border: 2px solid #f0f0f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .radio-label:hover, .checkbox-label:hover {
+            background: #fdebd0;
+            border-color: var(--primary);
+        }
+
+        input[type="radio"], input[type="checkbox"] {
+            margin-right: 12px;
+            transform: scale(1.2);
+        }
+
+        /* Styles for Text Inputs */
+        .input-text, .input-area {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+        
+        .input-area { min-height: 80px; resize: vertical; }
+
+        .input-text:focus, .input-area:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: #fffdf5;
+        }
+
+        /* Result & Feedback Box */
+        .feedback-box {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none; /* Hidden initially */
+            background-color: #f8f9fa;
+            border-left: 5px solid #ccc;
+        }
+
+        .feedback-box.correct {
+            background-color: #d4edda;
+            border-left-color: var(--success);
+            color: #155724;
+        }
+
+        .feedback-box.wrong {
+            background-color: #f8d7da;
+            border-left-color: var(--error);
+            color: #721c24;
+        }
+
+        .feedback-box.manual {
+            background-color: #fff3cd;
+            border-left-color: #ffc107;
+            color: #856404;
+        }
+
+        .answer-key {
+            font-weight: bold;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .explanation {
+            font-size: 0.9em;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        /* Sticky Footer for Submit */
+        .footer-action {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid #eee;
+            position: sticky;
+            bottom: 0;
+            box-shadow: 0 -5px 10px rgba(0,0,0,0.05);
+        }
+
+        .btn-submit {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .btn-submit:hover {
+            transform: scale(1.05);
+            background-color: #ba4a00;
+        }
+
+        .score-board {
+            text-align: center;
+            padding: 20px;
+            background: var(--secondary);
+            color: white;
+            display: none;
+            margin-bottom: 20px;
+            border-radius: 0 0 15px 15px;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            margin-top: 10px;
+            color: var(--bg-color);
+            text-decoration: underline;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>🏀 Ujian PJOK</h1>
+            <p>Kelas 4 - SD Dilaraf Islamic School</p>
+        </div>
+
+        <div class="score-board" id="score-board">
+            <h2>Hasil Pengerjaan</h2>
+            <div style="font-size: 3em; font-weight: bold;" id="final-score">0</div>
+            <p>Nilai di atas hanya untuk soal Pilihan Ganda & Benar Salah.</p>
+            <p>Silakan periksa Isian & Uraian secara mandiri di bawah ini.</p>
+            <a href="index.html" class="back-btn">Kembali ke Menu Utama</a>
+        </div>
+
+        <div class="question-list" id="question-container">
+            <!-- Soal akan di-render di sini oleh JavaScript -->
+        </div>
+
+        <div class="footer-action" id="footer-action">
+            <button class="btn-submit" onclick="submitExam()">Kumpulkan Jawaban ✅</button>
+        </div>
+    </div>
+
+    <script>
+        // Database Soal PJOK (40 Soal)
+        const questions = [
+            // --- PG (1-10) ---
+            {
+                id: 1, type: 'pg',
+                text: "Gerak dasar yang menggunakan alat bantu seperti bola disebut gerak...",
+                options: ["Lokomotor", "Nonlokomotor", "Manipulatif", "Irama"],
+                answer: 2, hint: "Menggunakan benda di luar tubuh."
+            },
+            {
+                id: 2, type: 'pg',
+                text: "Dalam permainan sepak bola, gerakan mengoper bola kepada teman disebut...",
+                options: ["Shooting", "Passing", "Dribbling", "Heading"],
+                answer: 1, hint: "Mengumpan bola."
+            },
+            {
+                id: 3, type: 'pg',
+                text: "Saat menangkap bola yang menggelundung di tanah, posisi badan sebaiknya...",
+                options: ["Berdiri tegak", "Melompat", "Jongkok", "Berlari"],
+                answer: 2, hint: "Agar tangan bisa menyentuh tanah."
+            },
+            {
+                id: 4, type: 'pg',
+                text: "Bagian tubuh yang TIDAK boleh digunakan untuk menahan bola dalam sepak bola (kecuali kiper) adalah...",
+                options: ["Dada", "Tangan", "Paha", "Kaki"],
+                answer: 1, hint: "Handsball."
+            },
+            {
+                id: 5, type: 'pg',
+                text: "Posisi kaki saat melakukan sikap lilin yang benar adalah...",
+                options: ["Ditekuk", "Lurus ke atas", "Dibuka lebar", "Menempel di lantai"],
+                answer: 1, hint: "Menyerupai lilin yang berdiri."
+            },
+            {
+                id: 6, type: 'pg',
+                text: "Sikap lilin berguna untuk melatih...",
+                options: ["Kekuatan otot kaki", "Keseimbangan", "Kecepatan lari", "Daya tahan jantung"],
+                answer: 1, hint: "Agar tubuh tidak jatuh."
+            },
+            {
+                id: 7, type: 'pg',
+                text: "Saat melakukan loncat kangkang melewati teman, sikap awal adalah...",
+                options: ["Duduk", "Tidur terlentang", "Berdiri tegak / Berlari kecil", "Jongkok"],
+                answer: 2, hint: "Ambil ancang-ancang."
+            },
+            {
+                id: 8, type: 'pg',
+                text: "Berikut ini yang termasuk dalam aktivitas senam lantai adalah...",
+                options: ["Lari estafet", "Renang gaya dada", "Guling depan (Roll depan)", "Menendang bola"],
+                answer: 2, hint: "Dilakukan di atas matras."
+            },
+            {
+                id: 9, type: 'pg',
+                text: "Sikap pesawat terbang adalah contoh gerakan untuk melatih...",
+                options: ["Keseimbangan", "Kelincahan", "Kekuatan", "Kecepatan"],
+                answer: 0, hint: "Bertumpu pada satu kaki."
+            },
+            {
+                id: 10, type: 'pg',
+                text: "Sikap bangau dilakukan dengan cara mengangkat...",
+                options: ["Kedua tangan", "Satu kaki", "Kepala", "Pinggang"],
+                answer: 1, hint: "Meniru burung bangau yang berdiri."
+            },
+
+            // --- PG KOMPLEKS (11-20) ---
+            {
+                id: 11, type: 'pg_kompleks',
+                text: "Manakah yang termasuk gerak manipulatif? (Pilih 2 jawaban)",
+                options: ["Berlari", "Melempar bola", "Menendang bola", "Tidur"],
+                answer: [1, 2], hint: "Gerakan memakai alat."
+            },
+            {
+                id: 12, type: 'pg_kompleks',
+                text: "Alat yang biasa digunakan dalam gerak manipulatif adalah... (Pilih 2 jawaban)",
+                options: ["Bola Kasti", "Matras", "Bola Sepak", "Lantai"],
+                answer: [0, 2], hint: "Benda yang bisa dilempar/ditendang."
+            },
+            {
+                id: 13, type: 'pg_kompleks',
+                text: "Cara melakukan lemparan bola melambung adalah... (Pilih 2 jawaban)",
+                options: ["Bola diayun dari bawah ke atas depan", "Pandangan ke arah sasaran", "Bola digelindingkan di tanah", "Bola dilempar ke bawah"],
+                answer: [0, 1], hint: "Agar bola naik tinggi."
+            },
+            {
+                id: 14, type: 'pg_kompleks',
+                text: "Saat menangkap bola lambung, posisi tangan harus... (Pilih 2 jawaban)",
+                options: ["Membentuk corong menghadap ke atas", "Kedua tangan rapat", "Tangan di belakang badan", "Mata terpejam"],
+                answer: [0, 1], hint: "Siap menerima bola dari atas."
+            },
+            {
+                id: 15, type: 'pg_kompleks',
+                text: "Ciri-ciri lemparan bola rendah/menyusur tanah... (Pilih 2 jawaban)",
+                options: ["Badan agak membungkuk", "Bola dilempar lurus ke atas", "Bola menggelundung di tanah", "Melompat tinggi"],
+                answer: [0, 2], hint: "Bola menyentuh tanah."
+            },
+            {
+                id: 16, type: 'pg_kompleks',
+                text: "Posisi tubuh saat menangkap bola rendah... (Pilih 2 jawaban)",
+                options: ["Jongkok atau berlutut satu kaki", "Telapak tangan menghadap depan bawah", "Berdiri tegak kaku", "Melompat"],
+                answer: [0, 1], hint: "Menyesuaikan tinggi bola."
+            },
+            {
+                id: 17, type: 'pg_kompleks',
+                text: "Hal yang perlu diperhatikan saat melakukan sikap bangau... (Pilih 2 jawaban)",
+                options: ["Pandangan lurus ke depan", "Menjaga keseimbangan agar tidak jatuh", "Memejamkan mata", "Berlari kencang"],
+                answer: [0, 1], hint: "Fokus dan seimbang."
+            },
+            {
+                id: 18, type: 'pg_kompleks',
+                text: "Manfaat melakukan gerakan keseimbangan adalah... (Pilih 2 jawaban)",
+                options: ["Meningkatkan konsentrasi", "Memperkuat otot kaki", "Membuat pusing", "Supaya cepat lelah"],
+                answer: [0, 1], hint: "Melatih fokus dan otot tumpuan."
+            },
+            {
+                id: 19, type: 'pg_kompleks',
+                text: "Dalam senam irama, gerakan langkah biasa dilakukan dengan... (Pilih 2 jawaban)",
+                options: ["Badan tegak", "Lutut mengeper (Rileks)", "Kaki diseret", "Badan membungkuk"],
+                answer: [0, 1], hint: "Sikap tegap tapi santai."
+            },
+            {
+                id: 20, type: 'pg_kompleks',
+                text: "Gerak dasar langkah kaki dalam senam irama meliputi... (Pilih 2 jawaban)",
+                options: ["Langkah biasa (Looppas)", "Langkah rapat (Bijtrekpas)", "Langkah diam", "Langkah tidur"],
+                answer: [0, 1], hint: "Nama-nama langkah senam."
+            },
+
+            // --- BENAR / SALAH (21-30) ---
+            {
+                id: 21, type: 'bs',
+                text: "Memantulkan bola (dribbling) termasuk gerak manipulatif.",
+                answer: "Benar", hint: "Pakai bola = manipulatif."
+            },
+            {
+                id: 22, type: 'bs',
+                text: "Lompat kangkang dilakukan dengan merapatkan kedua kaki saat di udara.",
+                answer: "Salah", hint: "Kangkang artinya kaki dibuka lebar."
+            },
+            {
+                id: 23, type: 'bs',
+                text: "Sikap kapal terbang bertumpu pada kedua kaki.",
+                answer: "Salah", hint: "Bertumpu pada satu kaki."
+            },
+            {
+                id: 24, type: 'bs',
+                text: "Menendang bola menggunakan punggung kaki biasanya untuk tembakan keras.",
+                answer: "Benar", hint: "Untuk shooting."
+            },
+            {
+                id: 25, type: 'bs',
+                text: "Sikap lilin diawali dengan posisi tidur telentang.",
+                answer: "Benar", hint: "Posisi awal di matras."
+            },
+            {
+                id: 26, type: 'bs',
+                text: "Berlari mengejar lawan adalah contoh gerak manipulatif.",
+                answer: "Salah", hint: "Itu gerak lokomotor (berpindah tempat)."
+            },
+            {
+                id: 27, type: 'bs',
+                text: "Pemanasan dilakukan setelah selesai berolahraga.",
+                answer: "Salah", hint: "Pemanasan di awal, pendinginan di akhir."
+            },
+            {
+                id: 28, type: 'bs',
+                text: "Lompat kangkang biasanya melewati peti lompat atau punggung teman.",
+                answer: "Benar", hint: "Rintangan lompat kangkang."
+            },
+            {
+                id: 29, type: 'bs',
+                text: "Tujuan pemanasan adalah untuk menghindari cedera.",
+                answer: "Benar", hint: "Menyiapkan otot."
+            },
+            {
+                id: 30, type: 'bs',
+                text: "Saat mendarat dalam lompat kangkang, lutut harus kaku.",
+                answer: "Salah", hint: "Lutut harus mengeper agar tidak sakit."
+            },
+
+            // --- ISIAN SINGKAT (31-35) ---
+            {
+                id: 31, type: 'isian',
+                text: "Saat melakukan sikap lilin, kedua tangan menopang pada bagian...",
+                answer: "Pinggang", hint: "Agar badan tegak."
+            },
+            {
+                id: 32, type: 'isian',
+                text: "Menahan bola yang melambung tinggi bisa menggunakan...",
+                answer: "Dada", hint: "Bagian tubuh atas selain tangan."
+            },
+            {
+                id: 33, type: 'isian',
+                text: "Gerakan sikap lilin bertujuan melatih...",
+                answer: "Keseimbangan", hint: "Agar tidak jatuh ke samping."
+            },
+            {
+                id: 34, type: 'isian',
+                text: "Sikap meniru pesawat terbang dilakukan dengan merentangkan...",
+                answer: "Tangan", hint: "Sebagai sayap."
+            },
+            {
+                id: 35, type: 'isian',
+                text: "Untuk mengoper jarak pendek, paling tepat menggunakan kaki bagian...",
+                answer: "Dalam", hint: "Paling akurat untuk operan."
+            },
+
+            // --- URAIAN (36-40) ---
+            {
+                id: 36, type: 'uraian',
+                text: "Sebutkan 3 macam cara melempar bola dalam permainan kasti!",
+                answer: "Melempar melambung, melempar mendatar, melempar menyusur tanah (menggelundung).", hint: "Atas, tengah, bawah."
+            },
+            {
+                id: 37, type: 'uraian',
+                text: "Sebutkan 3 bagian kaki yang bisa digunakan untuk menendang bola!",
+                answer: "Kaki bagian dalam, kaki bagian luar, punggung kaki (kura-kura kaki).", hint: "Sisi-sisi kaki."
+            },
+            {
+                id: 38, type: 'uraian',
+                text: "Jelaskan cara melakukan sikap lilin!",
+                answer: "Tidur telentang, angkat kedua kaki lurus ke atas, tangan menopang pinggang, tahan posisi.", hint: "Urutan gerakannya."
+            },
+            {
+                id: 39, type: 'uraian',
+                text: "Bagaimana posisi tangan saat menangkap bola melambung?",
+                answer: "Kedua tangan dijulurkan ke atas depan, telapak tangan terbuka membentuk corong.", hint: "Membentuk mangkuk/corong."
+            },
+            {
+                id: 40, type: 'uraian',
+                text: "Jelaskan cara menangkap bola rendah / menyusur tanah!",
+                answer: "Badan jongkok, telapak tangan dibuka menghadap ke depan bawah, tangkap bola saat mendekat.", hint: "Posisi badan turun."
+            }
+        ];
+
+        const container = document.getElementById('question-container');
+
+        // 1. RENDER SOAL
+        function renderQuestions() {
+            let html = "";
+            questions.forEach((q, index) => {
+                let inputHtml = "";
+                let qNum = index + 1;
+
+                if (q.type === 'pg' || q.type === 'bs') {
+                    // Pilihan Ganda & Benar Salah
+                    let options = q.type === 'bs' ? ["Benar", "Salah"] : q.options;
+                    
+                    options.forEach((opt, i) => {
+                        let val = q.type === 'bs' ? opt : i; 
+                        inputHtml += `
+                            <label class="radio-label">
+                                <input type="radio" name="q${q.id}" value="${val}">
+                                ${q.type === 'pg' ? String.fromCharCode(65+i) + '. ' : ''} ${opt}
+                            </label>
+                        `;
+                    });
+                } 
+                else if (q.type === 'pg_kompleks') {
+                    // Checkbox
+                    q.options.forEach((opt, i) => {
+                        inputHtml += `
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="q${q.id}" value="${i}">
+                                ${opt}
+                            </label>
+                        `;
+                    });
+                }
+                else if (q.type === 'isian') {
+                    // Input Text Pendek
+                    inputHtml = `<input type="text" class="input-text" name="q${q.id}" placeholder="Ketik jawabanmu..." autocomplete="off">`;
+                }
+                else if (q.type === 'uraian') {
+                    // Textarea
+                    inputHtml = `<textarea class="input-area" name="q${q.id}" placeholder="Tulis jawaban lengkapmu di sini..."></textarea>`;
+                }
+
+                html += `
+                    <div class="question-item" id="q-block-${q.id}">
+                        <span class="q-number">Soal No. ${qNum}</span>
+                        <div class="q-text">${q.text}</div>
+                        <div class="options-group">
+                            ${inputHtml}
+                        </div>
+                        <div class="feedback-box" id="feedback-${q.id}"></div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        // 2. FUNGSI SUBMIT & NILAI
+        function submitExam() {
+            let score = 0;
+            let maxScorePG = 0; 
+            
+            questions.forEach(q => {
+                const feedbackEl = document.getElementById(`feedback-${q.id}`);
+                let isCorrect = false;
+                let userAnswer = "-";
+                
+                // --- LOGIKA PENILAIAN ---
+                if (q.type === 'pg' || q.type === 'bs') {
+                    maxScorePG++;
+                    const selected = document.querySelector(`input[name="q${q.id}"]:checked`);
+                    if (selected) {
+                        userAnswer = selected.value;
+                        let valToCheck = q.type === 'pg' ? parseInt(userAnswer) : userAnswer;
+                        if (valToCheck === q.answer) isCorrect = true;
+                    }
+
+                    if (isCorrect) {
+                        score++;
+                        feedbackEl.className = "feedback-box correct";
+                        feedbackEl.innerHTML = `✅ <b>Jawaban Benar!</b>`;
+                    } else {
+                        feedbackEl.className = "feedback-box wrong";
+                        let correctText = (q.type === 'pg') ? q.options[q.answer] : q.answer;
+                        feedbackEl.innerHTML = `❌ <b>Jawaban Kurang Tepat.</b><br>
+                                                <span class="answer-key">Kunci Jawaban: ${correctText}</span>
+                                                <div class="explanation">Hint: ${q.hint}</div>`;
+                    }
+                } 
+                else if (q.type === 'pg_kompleks') {
+                    maxScorePG++;
+                    const checkedBoxes = document.querySelectorAll(`input[name="q${q.id}"]:checked`);
+                    let userIndices = Array.from(checkedBoxes).map(cb => parseInt(cb.value)).sort();
+                    let correctIndices = [...q.answer].sort();
+                    
+                    if (JSON.stringify(userIndices) === JSON.stringify(correctIndices)) {
+                        isCorrect = true;
+                        score++;
+                        feedbackEl.className = "feedback-box correct";
+                        feedbackEl.innerHTML = `✅ <b>Jawaban Benar!</b>`;
+                    } else {
+                        feedbackEl.className = "feedback-box wrong";
+                        let correctText = q.answer.map(idx => "• " + q.options[idx]).join("<br>");
+                        feedbackEl.innerHTML = `❌ <b>Jawaban Kurang Tepat.</b><br>
+                                                <span class="answer-key">Seharusnya memilih:</span><br>${correctText}
+                                                <div class="explanation">Hint: ${q.hint}</div>`;
+                    }
+                }
+                else if (q.type === 'isian' || q.type === 'uraian') {
+                    // Manual Review
+                    const input = document.querySelector(`[name="q${q.id}"]`);
+                    userAnswer = input ? input.value : "";
+                    
+                    feedbackEl.className = "feedback-box manual";
+                    feedbackEl.innerHTML = `📝 <b>Silakan Periksa Mandiri</b><br>
+                                            Jawaban Kamu: <b>${userAnswer || "(Kosong)"}</b><br>
+                                            <span class="answer-key">Kunci Jawaban: ${q.answer}</span>`;
+                }
+
+                feedbackEl.style.display = "block";
+                const inputs = document.querySelectorAll(`[name="q${q.id}"]`);
+                inputs.forEach(inp => inp.disabled = true);
+            });
+
+            // Tampilkan Skor Akhir
+            const scoreBoard = document.getElementById('score-board');
+            const finalScoreEl = document.getElementById('final-score');
+            const finalValue = Math.round((score / maxScorePG) * 100);
+            
+            finalScoreEl.textContent = finalValue;
+            scoreBoard.style.display = "block";
+            document.getElementById('footer-action').style.display = "none";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        renderQuestions();
+    </script>
+</body>
+</html>
