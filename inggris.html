@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Exam Grade 4 - SD Dilaraf Islamic School</title>
+    <style>
+        :root {
+            --primary: #e84393; /* Warna Pink */
+            --secondary: #fd79a8;
+            --bg-color: #fce4ec;
+            --card-bg: #ffffff;
+            --text: #2d3436;
+            --border: #dfe6e9;
+            --success: #00b894;
+            --error: #d63031;
+            --warning: #f1c40f;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            color: var(--text);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: var(--primary);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-bottom: 5px solid #c44569;
+        }
+
+        .header h1 { margin: 0; font-size: 1.8em; }
+        .header p { margin: 10px 0 0; opacity: 0.9; }
+
+        .question-list {
+            padding: 30px;
+        }
+
+        .question-item {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px dashed var(--border);
+        }
+
+        .q-number {
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .q-text {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .reading-text {
+            background-color: #fff0f6;
+            border: 2px solid #fd79a8;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 1em;
+            line-height: 1.6;
+        }
+
+        /* Styles for Options */
+        .options-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .radio-label, .checkbox-label {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .radio-label:hover, .checkbox-label:hover {
+            background: #f8a5c2;
+            border-color: var(--primary);
+        }
+
+        input[type="radio"], input[type="checkbox"] {
+            margin-right: 12px;
+            transform: scale(1.2);
+        }
+
+        /* Styles for Text Inputs */
+        .input-text, .input-area {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #b2bec3;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+        
+        .input-area { min-height: 80px; resize: vertical; }
+
+        .input-text:focus, .input-area:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: #fff0f6;
+        }
+
+        /* Result & Feedback Box */
+        .feedback-box {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none; /* Hidden initially */
+            background-color: #f1f2f6;
+            border-left: 5px solid #ccc;
+        }
+
+        .feedback-box.correct {
+            background-color: #d4edda;
+            border-left-color: var(--success);
+            color: #155724;
+        }
+
+        .feedback-box.wrong {
+            background-color: #f8d7da;
+            border-left-color: var(--error);
+            color: #721c24;
+        }
+
+        .feedback-box.manual {
+            background-color: #fff3cd;
+            border-left-color: #ffc107;
+            color: #856404;
+        }
+
+        .answer-key {
+            font-weight: bold;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .explanation {
+            font-size: 0.9em;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        /* Sticky Footer for Submit */
+        .footer-action {
+            background: #f1f2f6;
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            position: sticky;
+            bottom: 0;
+            box-shadow: 0 -5px 10px rgba(0,0,0,0.05);
+        }
+
+        .btn-submit {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .btn-submit:hover {
+            transform: scale(1.05);
+            background-color: #c44569;
+        }
+
+        .score-board {
+            text-align: center;
+            padding: 20px;
+            background: var(--secondary);
+            color: white;
+            display: none;
+            margin-bottom: 20px;
+            border-radius: 0 0 15px 15px;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            margin-top: 10px;
+            color: var(--bg-color);
+            text-decoration: underline;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>🇬🇧 English Exam</h1>
+            <p>Grade 4 - SD Dilaraf Islamic School</p>
+        </div>
+
+        <div class="score-board" id="score-board">
+            <h2>Result / Hasil</h2>
+            <div style="font-size: 3em; font-weight: bold;" id="final-score">0</div>
+            <p>Nilai di atas hanya untuk soal Pilihan Ganda & Benar Salah.</p>
+            <p>Silakan periksa Isian & Uraian secara mandiri di bawah ini.</p>
+            <a href="index.html" class="back-btn">Kembali ke Menu Utama</a>
+        </div>
+
+        <div class="question-list" id="question-container">
+            <!-- Soal akan di-render di sini oleh JavaScript -->
+        </div>
+
+        <div class="footer-action" id="footer-action">
+            <button class="btn-submit" onclick="submitExam()">Submit Answers ✅</button>
+        </div>
+    </div>
+
+    <script>
+        // Database Soal Bahasa Inggris (40 Soal)
+        const questions = [
+            // --- PG (1-10) : Daily Activities ---
+            {
+                id: 1, type: 'pg',
+                text: "What does Rani do in the kitchen?",
+                options: ["She sleeps", "She cooks", "She plays football", "She takes a bath"],
+                answer: 1, hint: "Activities with stove and pan."
+            },
+            {
+                id: 2, type: 'pg',
+                text: "Joshua is in the bedroom. He is...",
+                options: ["Cooking", "Sleeping", "Eating", "Swimming"],
+                answer: 1, hint: "Activity on the bed."
+            },
+            {
+                id: 3, type: 'pg',
+                text: "Made ... in the living room every afternoon.",
+                options: ["studies", "cooks", "takes a bath", "washes hands"],
+                answer: 0, hint: "Reading books and doing homework."
+            },
+            {
+                id: 4, type: 'pg',
+                text: "Cici and her family eat dinner in the...",
+                options: ["Bathroom", "Garage", "Dining room", "Bedroom"],
+                answer: 2, hint: "Room with a big table for eating."
+            },
+            {
+                id: 5, type: 'pg',
+                text: "What does Aisyah do in the bathroom?",
+                options: ["She watches TV", "She takes a bath", "She cooks rice", "She plays doll"],
+                answer: 1, hint: "Cleaning body with water and soap."
+            },
+            {
+                id: 6, type: 'pg',
+                text: "Where do you watch TV?",
+                options: ["In the living room", "In the bathroom", "In the kitchen", "In the garden"],
+                answer: 0, hint: "Room with sofa and television."
+            },
+            {
+                id: 7, type: 'pg',
+                text: "Mr. Udin ... the newspaper in the living room.",
+                options: ["eats", "reads", "sleeps", "cooks"],
+                answer: 1, hint: "Activity with a newspaper or book."
+            },
+            {
+                id: 8, type: 'pg',
+                text: "Does Joshua play football in the bedroom?",
+                options: ["Yes, he does", "No, he doesn't", "Yes, she does", "No, she doesn't"],
+                answer: 1, hint: "Playing football inside the bedroom is dangerous."
+            },
+            {
+                id: 9, type: 'pg',
+                text: "Mother washes the clothes in the...",
+                options: ["Living room", "Bedroom", "Bathroom / Laundry room", "Kitchen"],
+                answer: 2, hint: "Place with water."
+            },
+            {
+                id: 10, type: 'pg',
+                text: "Every morning, I ... breakfast before going to school.",
+                options: ["eat", "sleep", "play", "study"],
+                answer: 0, hint: "Activity in the morning with food."
+            },
+
+            // --- PG KOMPLEKS (11-20) : Things in Rooms ---
+            // Teks untuk soal 11-13
+            {
+                id: 11, type: 'pg_kompleks',
+                text: "<div class='reading-text'><b>My Bedroom</b><br>Hello, I am Cici. This is my bedroom. It is clean and tidy. There is a bed, a pillow, and a blanket. There is also a desk and a chair for studying. On the desk, there is a lamp and some books. I love my bedroom.</div>Based on the text, what are the things in Cici's bedroom? (Choose 2 answers)",
+                options: ["Stove", "Pillow", "Lamp", "Sofa"],
+                answer: [1, 2], hint: "Look for objects mentioned in the text."
+            },
+            {
+                id: 12, type: 'pg_kompleks',
+                text: "What furniture does Cici use for studying? (Choose 2 answers)",
+                options: ["Desk", "Bed", "Chair", "Blanket"],
+                answer: [0, 2], hint: "You sit on it and write on it."
+            },
+            {
+                id: 13, type: 'pg_kompleks',
+                text: "How is Cici's bedroom? (Choose 2 answers)",
+                options: ["Dirty", "Clean", "Messy", "Tidy"],
+                answer: [1, 3], hint: "Adjectives describing the room."
+            },
+            // Teks untuk soal 14-16
+            {
+                id: 14, type: 'pg_kompleks',
+                text: "<div class='reading-text'><b>The Living Room</b><br>This is Joshua's living room. There is a big sofa and a television. There are two paintings on the wall. There is also a purple carpet on the floor. Joshua likes to watch TV here.</div>What can you find in Joshua's living room? (Choose 2 answers)",
+                options: ["Sofa", "Bathtub", "Television", "Stove"],
+                answer: [0, 2], hint: "Items for sitting and watching."
+            },
+            {
+                id: 15, type: 'pg_kompleks',
+                text: "Where are the paintings? (Choose 2 correct facts)",
+                options: ["On the floor", "On the wall", "There are two paintings", "There is one painting"],
+                answer: [1, 2], hint: "Location and number of paintings."
+            },
+            {
+                id: 16, type: 'pg_kompleks',
+                text: "Select the things usually found in the <b>Kitchen</b>! (Choose 2 answers)",
+                options: ["Stove", "Bolster", "Frying pan", "Shower"],
+                answer: [0, 2], hint: "Cooking utensils."
+            },
+            {
+                id: 17, type: 'pg_kompleks',
+                text: "Select the things usually found in the <b>Bathroom</b>! (Choose 2 answers)",
+                options: ["Soap", "Dipper", "Pillow", "Carpet"],
+                answer: [0, 1], hint: "Things for taking a bath."
+            },
+            {
+                id: 18, type: 'pg_kompleks',
+                text: "Which sentences use 'There are' correctly? (Choose 2 answers)",
+                options: ["There are two pillows.", "There are a lamp.", "There are five plates.", "There are one bolster."],
+                answer: [0, 2], hint: "There are is for plural (more than one)."
+            },
+            {
+                id: 19, type: 'pg_kompleks',
+                text: "Which sentences use 'There is' correctly? (Choose 2 answers)",
+                options: ["There is a blanket.", "There is two chairs.", "There is one table.", "There is many books."],
+                answer: [0, 2], hint: "There is is for singular (one)."
+            },
+            {
+                id: 20, type: 'pg_kompleks',
+                text: "What do you do in the bedroom? (Choose 2 answers)",
+                options: ["Sleep", "Take a bath", "Rest", "Cook"],
+                answer: [0, 2], hint: "Activities in the sleeping room."
+            },
+
+            // --- MEMASANGKAN (Diadaptasi jadi PG) (21-25) ---
+            {
+                id: 21, type: 'pg',
+                text: "Match: 'Bantal' in English is...",
+                options: ["Bolster", "Pillow", "Blanket", "Bed"],
+                answer: 1, hint: "For your head."
+            },
+            {
+                id: 22, type: 'pg',
+                text: "Match: 'Guling' in English is...",
+                options: ["Pillow", "Bolster", "Doll", "Carpet"],
+                answer: 1, hint: "Long pillow to hug."
+            },
+            {
+                id: 23, type: 'pg',
+                text: "Match: 'Selimut' in English is...",
+                options: ["Blanket", "Carpet", "Curtain", "Mat"],
+                answer: 0, hint: "Keeps you warm."
+            },
+            {
+                id: 24, type: 'pg',
+                text: "Match: 'Kompor' in English is...",
+                options: ["Pan", "Stove", "Plate", "Spoon"],
+                answer: 1, hint: "For cooking/heating food."
+            },
+            {
+                id: 25, type: 'pg',
+                text: "Match: 'Gayung' in English is...",
+                options: ["Soap", "Dipper", "Towel", "Toothbrush"],
+                answer: 1, hint: "To scoop water."
+            },
+
+            // --- BENAR / SALAH (26-30) ---
+            // Teks untuk 26-30
+            {
+                id: 26, type: 'bs',
+                text: "Text: 'Rani helps her mother in the kitchen. She washes the plates.' <br>Statement: Rani is in the bedroom.",
+                answer: "Salah", hint: "She is in the kitchen."
+            },
+            {
+                id: 27, type: 'bs',
+                text: "Statement: We use 'spoon' and 'fork' to eat.",
+                answer: "Benar", hint: "Tools for eating."
+            },
+            {
+                id: 28, type: 'bs',
+                text: "Statement: A 'wardrobe' is a place to keep clothes.",
+                answer: "Benar", hint: "Lemari pakaian."
+            },
+            {
+                id: 29, type: 'bs',
+                text: "Statement: We take a bath in the living room.",
+                answer: "Salah", hint: "Wrong room."
+            },
+            {
+                id: 30, type: 'bs',
+                text: "Statement: 'Toothpaste' means 'Pasta Gigi'.",
+                answer: "Benar", hint: "Translation check."
+            },
+
+            // --- ISIAN SINGKAT (31-35) ---
+            {
+                id: 31, type: 'isian',
+                text: "Look at the picture (imagine): There is one ... (bantal) on the bed.",
+                answer: "pillow", hint: "English for Bantal."
+            },
+            {
+                id: 32, type: 'isian',
+                text: "There ... (is/are) two bolsters on the bed.",
+                answer: "are", hint: "Plural subject."
+            },
+            {
+                id: 33, type: 'isian',
+                text: "We use ... (sabun) to clean our body.",
+                answer: "soap", hint: "English for Sabun."
+            },
+            {
+                id: 34, type: 'isian',
+                text: "There ... (is/are) a television in the living room.",
+                answer: "is", hint: "Singular subject."
+            },
+            {
+                id: 35, type: 'isian',
+                text: "Mother cooks in the ... (dapur).",
+                answer: "kitchen", hint: "Room for cooking."
+            },
+
+            // --- URAIAN (36-40) ---
+            {
+                id: 36, type: 'uraian',
+                text: "Mention 3 things in the Bedroom!",
+                answer: "Pillow, Bolster, Blanket, Bed, Wardrobe, Lamp (Any 3)", hint: "Items where you sleep."
+            },
+            {
+                id: 37, type: 'uraian',
+                text: "Mention 3 things in the Bathroom!",
+                answer: "Dipper, Soap, Shampoo, Towel, Toothbrush, Toothpaste", hint: "Items for cleaning body."
+            },
+            {
+                id: 38, type: 'uraian',
+                text: "Make a sentence using: 'There are'!",
+                answer: "Example: There are two books on the table.", hint: "Use plural nouns."
+            },
+            {
+                id: 39, type: 'uraian',
+                text: "What do you do in the living room? (Mention 2 activities)",
+                answer: "Watch TV, Read newspaper, Talk with family, Play", hint: "Activities with family."
+            },
+            {
+                id: 40, type: 'uraian',
+                text: "Translate to English: 'Saya tidur di kamar tidur'.",
+                answer: "I sleep in the bedroom.", hint: "S-P-O structure."
+            }
+        ];
+
+        const container = document.getElementById('question-container');
+
+        // 1. RENDER SOAL
+        function renderQuestions() {
+            let html = "";
+            questions.forEach((q, index) => {
+                let inputHtml = "";
+                let qNum = index + 1;
+
+                if (q.type === 'pg' || q.type === 'bs') {
+                    // Pilihan Ganda & Benar Salah
+                    let options = q.type === 'bs' ? ["True (Benar)", "False (Salah)"] : q.options;
+                    
+                    options.forEach((opt, i) => {
+                        let val = q.type === 'bs' ? (i===0 ? "Benar" : "Salah") : i; 
+                        inputHtml += `
+                            <label class="radio-label">
+                                <input type="radio" name="q${q.id}" value="${val}">
+                                ${q.type === 'pg' ? String.fromCharCode(65+i) + '. ' : ''} ${opt}
+                            </label>
+                        `;
+                    });
+                } 
+                else if (q.type === 'pg_kompleks') {
+                    // Checkbox
+                    q.options.forEach((opt, i) => {
+                        inputHtml += `
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="q${q.id}" value="${i}">
+                                ${opt}
+                            </label>
+                        `;
+                    });
+                }
+                else if (q.type === 'isian') {
+                    // Input Text Pendek
+                    inputHtml = `<input type="text" class="input-text" name="q${q.id}" placeholder="Type your answer..." autocomplete="off">`;
+                }
+                else if (q.type === 'uraian') {
+                    // Textarea
+                    inputHtml = `<textarea class="input-area" name="q${q.id}" placeholder="Type your answer here..."></textarea>`;
+                }
+
+                html += `
+                    <div class="question-item" id="q-block-${q.id}">
+                        <span class="q-number">Question No. ${qNum}</span>
+                        ${q.text.includes('<div') ? q.text : `<div class="q-text">${q.text}</div>`}
+                        <div class="options-group">
+                            ${inputHtml}
+                        </div>
+                        <div class="feedback-box" id="feedback-${q.id}"></div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        // 2. FUNGSI SUBMIT & NILAI
+        function submitExam() {
+            let score = 0;
+            let maxScorePG = 0; 
+            
+            questions.forEach(q => {
+                const feedbackEl = document.getElementById(`feedback-${q.id}`);
+                let isCorrect = false;
+                let userAnswer = "-";
+                
+                // --- LOGIKA PENILAIAN ---
+                if (q.type === 'pg' || q.type === 'bs') {
+                    maxScorePG++;
+                    const selected = document.querySelector(`input[name="q${q.id}"]:checked`);
+                    if (selected) {
+                        userAnswer = selected.value;
+                        let valToCheck = q.type === 'pg' ? parseInt(userAnswer) : userAnswer;
+                        if (valToCheck === q.answer) isCorrect = true;
+                    }
+
+                    if (isCorrect) {
+                        score++;
+                        feedbackEl.className = "feedback-box correct";
+                        feedbackEl.innerHTML = `✅ <b>Correct!</b>`;
+                    } else {
+                        feedbackEl.className = "feedback-box wrong";
+                        let correctText = (q.type === 'pg') ? q.options[q.answer] : q.answer;
+                        if(q.type === 'bs') correctText = q.answer; // Fix for BS text display
+                        
+                        feedbackEl.innerHTML = `❌ <b>Incorrect.</b><br>
+                                                <span class="answer-key">Correct Answer: ${correctText}</span>
+                                                <div class="explanation">Hint: ${q.hint}</div>`;
+                    }
+                } 
+                else if (q.type === 'pg_kompleks') {
+                    maxScorePG++;
+                    const checkedBoxes = document.querySelectorAll(`input[name="q${q.id}"]:checked`);
+                    let userIndices = Array.from(checkedBoxes).map(cb => parseInt(cb.value)).sort();
+                    let correctIndices = [...q.answer].sort();
+                    
+                    if (JSON.stringify(userIndices) === JSON.stringify(correctIndices)) {
+                        isCorrect = true;
+                        score++;
+                        feedbackEl.className = "feedback-box correct";
+                        feedbackEl.innerHTML = `✅ <b>Correct!</b>`;
+                    } else {
+                        feedbackEl.className = "feedback-box wrong";
+                        let correctText = q.answer.map(idx => "• " + q.options[idx]).join("<br>");
+                        feedbackEl.innerHTML = `❌ <b>Incorrect.</b><br>
+                                                <span class="answer-key">Correct Answers:</span><br>${correctText}
+                                                <div class="explanation">Hint: ${q.hint}</div>`;
+                    }
+                }
+                else if (q.type === 'isian' || q.type === 'uraian') {
+                    // Manual Review
+                    const input = document.querySelector(`[name="q${q.id}"]`);
+                    userAnswer = input ? input.value : "";
+                    
+                    feedbackEl.className = "feedback-box manual";
+                    feedbackEl.innerHTML = `📝 <b>Check Manually</b><br>
+                                            Your Answer: <b>${userAnswer || "(Empty)"}</b><br>
+                                            <span class="answer-key">Key/Example: ${q.answer}</span>`;
+                }
+
+                feedbackEl.style.display = "block";
+                const inputs = document.querySelectorAll(`[name="q${q.id}"]`);
+                inputs.forEach(inp => inp.disabled = true);
+            });
+
+            // Tampilkan Skor Akhir
+            const scoreBoard = document.getElementById('score-board');
+            const finalScoreEl = document.getElementById('final-score');
+            const finalValue = Math.round((score / maxScorePG) * 100);
+            
+            finalScoreEl.textContent = finalValue;
+            scoreBoard.style.display = "block";
+            document.getElementById('footer-action').style.display = "none";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        renderQuestions();
+    </script>
+</body>
+</html>
