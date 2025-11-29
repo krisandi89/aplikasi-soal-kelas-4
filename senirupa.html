@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ujian Seni Rupa Kelas 4 - SD Dilaraf Islamic School</title>
+    <style>
+        :root {
+            --primary: #e67e22; /* Warna Oranye Artistik */
+            --secondary: #f39c12;
+            --bg-color: #fcf3cf;
+            --card-bg: #ffffff;
+            --text: #2d3436;
+            --border: #bdc3c7;
+            --success: #27ae60;
+            --error: #c0392b;
+            --warning: #f1c40f;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            color: var(--text);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: var(--primary);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-bottom: 5px solid #d35400;
+        }
+
+        .header h1 { margin: 0; font-size: 1.8em; }
+        .header p { margin: 10px 0 0; opacity: 0.9; }
+
+        .question-list {
+            padding: 30px;
+        }
+
+        .question-item {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px dashed var(--border);
+        }
+
+        .q-number {
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .q-text {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .img-placeholder {
+            background: #ecf0f1;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-style: italic;
+            color: #7f8c8d;
+            border: 2px dashed #bdc3c7;
+        }
+
+        /* Styles for Options */
+        .options-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .radio-label, .checkbox-label {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .radio-label:hover, .checkbox-label:hover {
+            background: #fad7a0;
+            border-color: var(--primary);
+        }
+
+        input[type="radio"], input[type="checkbox"] {
+            margin-right: 12px;
+            transform: scale(1.2);
+        }
+
+        /* Styles for Text Inputs */
+        .input-text, .input-area {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #b2bec3;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+        
+        .input-area { min-height: 80px; resize: vertical; }
+
+        .input-text:focus, .input-area:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: #fef9e7;
+        }
+
+        /* Result & Feedback Box */
+        .feedback-box {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none; /* Hidden initially */
+            background-color: #f1f2f6;
+            border-left: 5px solid #ccc;
+        }
+
+        .feedback-box.correct {
+            background-color: #d4edda;
+            border-left-color: var(--success);
+            color: #155724;
+        }
+
+        .feedback-box.wrong {
+            background-color: #f8d7da;
+            border-left-color: var(--error);
+            color: #721c24;
+        }
+
+        .feedback-box.manual {
+            background-color: #fff3cd;
+            border-left-color: #ffc107;
+            color: #856404;
+        }
+
+        .answer-key {
+            font-weight: bold;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .explanation {
+            font-size: 0.9em;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        /* Sticky Footer for Submit */
+        .footer-action {
+            background: #f1f2f6;
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            position: sticky;
+            bottom: 0;
+            box-shadow: 0 -5px 10px rgba(0,0,0,0.05);
+        }
+
+        .btn-submit {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .btn-submit:hover {
+            transform: scale(1.05);
+            background-color: #d35400;
+        }
+
+        .score-board {
+            text-align: center;
+            padding: 20px;
+            background: var(--secondary);
+            color: white;
+            display: none;
+            margin-bottom: 20px;
+            border-radius: 0 0 15px 15px;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            margin-top: 10px;
+            color: var(--bg-color);
+            text-decoration: underline;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>🎨 Ujian Seni Rupa</h1>
+            <p>Kelas 4 - SD Dilaraf Islamic School</p>
+        </div>
+
+        <div class="score-board" id="score-board">
+            <h2>Hasil Pengerjaan</h2>
+            <div style="font-size: 3em; font-weight: bold;" id="final-score">0</div>
+            <p>Nilai di atas hanya untuk soal Pilihan Ganda & Benar Salah.</p>
+            <p>Silakan periksa Isian & Uraian secara mandiri di bawah ini.</p>
+            <a href="index.html" class="back-btn">Kembali ke Menu Utama</a>
+        </div>
+
+        <div class="question-list" id="question-container">
+            <!-- Soal akan di-render di sini oleh JavaScript -->
+        </div>
+
+        <div class="footer-action" id="footer-action">
+            <button class="btn-submit" onclick="submitExam()">Kumpulkan Jawaban ✅</button>
+        </div>
+    </div>
+
+    <script>
+        // Database Soal Seni Rupa (40 Soal)
+        const questions = [
+            // --- PG (1-10) ---
+            {
+                id: 1, type: 'pg',
+                text: "Contoh karya seni rupa dua dimensi (dwimatra) adalah...",
+                options: ["Patung", "Lukisan", "Keramik", "Candi"],
+                answer: 1, hint: "Hanya memiliki panjang dan lebar."
+            },
+            {
+                id: 2, type: 'pg',
+                text: "Karya seni rupa yang memiliki panjang, lebar, dan tinggi (volume) disebut karya seni...",
+                options: ["Satu Dimensi", "Dua Dimensi", "Tiga Dimensi", "Empat Dimensi"],
+                answer: 2, hint: "Bisa dilihat dari segala arah."
+            },
+            {
+                id: 3, type: 'pg',
+                text: "Tujuan utama membuat diorama rumah adat Indonesia adalah untuk...",
+                options: ["Dijual di pasar", "Menambah sampah", "Mengenal dan melestarikan budaya", "Bermain perang-perangan"],
+                answer: 2, hint: "Berkaitan dengan cinta tanah air."
+            },
+            {
+                id: 4, type: 'pg',
+                text: "Salah satu contoh fauna endemik Indonesia yang dilindungi adalah...",
+                options: ["Kangguru", "Panda", "Komodo", "Unta"],
+                answer: 2, hint: "Hewan purba dari Nusa Tenggara Timur."
+            },
+            {
+                id: 5, type: 'pg',
+                text: "Seni grafis adalah cabang seni rupa yang proses pembuatannya menggunakan teknik...",
+                options: ["Pahat", "Cetak", "Butsir", "Ukir"],
+                answer: 1, hint: "Menghasilkan karya yang bisa diperbanyak."
+            },
+            {
+                id: 6, type: 'pg',
+                text: "Komodo adalah fauna endemik yang berasal dari daerah...",
+                options: ["Jawa Barat", "Sumatera Utara", "Nusa Tenggara Timur", "Kalimantan"],
+                answer: 2, hint: "Pulau yang namanya sama dengan hewannya."
+            },
+            {
+                id: 7, type: 'pg',
+                text: "Bahan yang paling sering dan mudah digunakan untuk membuat kerangka diorama rumah adat adalah...",
+                options: ["Besi baja", "Kaca", "Kardus bekas", "Emas"],
+                answer: 2, hint: "Barang bekas yang mudah dipotong."
+            },
+            {
+                id: 8, type: 'pg',
+                text: "Media seni yang digunakan sebagai tempat untuk memindahkan gambar atau tulisan dari cetakan disebut...",
+                options: ["Acuan cetak / Klise", "Pewarna", "Kuas", "Palet"],
+                answer: 0, hint: "Induk cetakan."
+            },
+            {
+                id: 9, type: 'pg',
+                text: "Alat utama yang digunakan untuk menggambar sketsa awal adalah...",
+                options: ["Spidol permanen", "Krayon", "Pensil", "Cat Minyak"],
+                answer: 2, hint: "Mudah dihapus jika salah."
+            },
+            {
+                id: 10, type: 'pg',
+                text: "Teknik mewarnai dengan sapuan tipis sehingga hasilnya tembus pandang disebut teknik...",
+                options: ["Plakat", "Aquarel", "Pointilis", "Arsir"],
+                answer: 1, hint: "Biasanya menggunakan cat air."
+            },
+
+            // --- PG KOMPLEKS (11-20) ---
+            {
+                id: 11, type: 'pg_kompleks',
+                text: "Pilihlah 2 ciri-ciri karya seni rupa dua dimensi!",
+                options: ["Hanya dapat dilihat dari satu arah (depan)", "Memiliki ruang/volume", "Memiliki ukuran panjang dan lebar", "Bisa diraba dari belakang"],
+                answer: [0, 2], hint: "Seperti kertas atau kanvas."
+            },
+            {
+                id: 12, type: 'pg_kompleks',
+                text: "Manakah yang termasuk bahan lunak dalam berkarya seni? (Pilih 2 jawaban)",
+                options: ["Tanah Liat", "Kayu Jati", "Plastisin / Lilin Mainan", "Batu Andesit"],
+                answer: [0, 2], hint: "Mudah dibentuk dengan tangan."
+            },
+            {
+                id: 13, type: 'pg_kompleks',
+                text: "Berikut ini yang termasuk pewarna kering adalah... (Pilih 2 jawaban)",
+                options: ["Cat Air", "Pensil Warna", "Krayon", "Cat Minyak"],
+                answer: [1, 2], hint: "Tidak butuh air atau minyak."
+            },
+            {
+                id: 14, type: 'pg_kompleks',
+                text: "Manakah yang merupakan contoh karya seni tiga dimensi? (Pilih 2 jawaban)",
+                options: ["Patung Pahlawan", "Foto Presiden", "Topeng", "Gambar Pemandangan"],
+                answer: [0, 2], hint: "Benda yang menonjol atau bervolume."
+            },
+            {
+                id: 15, type: 'pg_kompleks',
+                text: "Apa saja unsur-unsur dasar seni rupa? (Pilih 2 jawaban)",
+                options: ["Garis", "Warna", "Suara", "Gerak"],
+                answer: [0, 1], hint: "Yang bisa dilihat mata."
+            },
+            {
+                id: 16, type: 'pg_kompleks',
+                text: "Tujuan pembuatan poster infografis adalah... (Pilih 2 jawaban)",
+                options: ["Menyampaikan informasi secara visual", "Membingungkan pembaca", "Membuat data lebih menarik dan mudah dipahami", "Menyembunyikan fakta"],
+                answer: [0, 2], hint: "Agar orang mudah mengerti."
+            },
+            {
+                id: 17, type: 'pg_kompleks',
+                text: "Alat yang bisa digunakan untuk memotong bahan kardus saat membuat diorama adalah... (Pilih 2 jawaban)",
+                options: ["Gunting", "Cutter", "Sendok", "Palu"],
+                answer: [0, 1], hint: "Benda tajam pemotong."
+            },
+            {
+                id: 18, type: 'pg_kompleks',
+                text: "Berikut ini adalah flora (tumbuhan) khas Indonesia... (Pilih 2 jawaban)",
+                options: ["Bunga Rafflesia Arnoldii", "Bunga Sakura", "Anggrek Hitam", "Pohon Kaktus Gurun"],
+                answer: [0, 2], hint: "Bunga bangkai dan anggrek papua/kalimantan."
+            },
+            {
+                id: 19, type: 'pg_kompleks',
+                text: "Prinsip keseimbangan dalam seni rupa berarti... (Pilih 2 jawaban)",
+                options: ["Posisi objek tidak berat sebelah", "Susunan gambar enak dilihat", "Gambar miring ke satu sisi", "Warna hanya hitam putih"],
+                answer: [0, 1], hint: "Balance."
+            },
+            {
+                id: 20, type: 'pg_kompleks',
+                text: "Manfaat membuat karya seni dari barang bekas adalah... (Pilih 2 jawaban)",
+                options: ["Mengurangi sampah", "Menghemat biaya", "Membuat lingkungan kotor", "Menambah polusi"],
+                answer: [0, 1], hint: "Recycle itu baik."
+            },
+
+            // --- MEMASANGKAN / BENAR SALAH (21-30) ---
+            {
+                id: 21, type: 'bs',
+                text: "Rumah Gadang adalah rumah adat dari Sumatera Barat.",
+                answer: "Benar", hint: "Atapnya runcing seperti tanduk kerbau."
+            },
+            {
+                id: 22, type: 'bs',
+                text: "Teknik kolase dilakukan dengan cara memahat kayu.",
+                answer: "Salah", hint: "Kolase itu menempel potongan bahan."
+            },
+            {
+                id: 23, type: 'bs',
+                text: "Warna primer terdiri dari Merah, Kuning, dan Biru.",
+                answer: "Benar", hint: "Warna dasar."
+            },
+            {
+                id: 24, type: 'bs',
+                text: "Patung adalah contoh karya seni rupa dua dimensi.",
+                answer: "Salah", hint: "Patung itu 3 dimensi."
+            },
+            {
+                id: 25, type: 'bs',
+                text: "Sketsa biasanya dibuat menggunakan pensil tipis-tipis.",
+                answer: "Benar", hint: "Agar mudah dihapus."
+            },
+            {
+                id: 26, type: 'bs',
+                text: "Dalam poster, tulisan sebaiknya berukuran sangat kecil agar muat banyak.",
+                answer: "Salah", hint: "Tulisan poster harus terbaca jelas dari jauh."
+            },
+            {
+                id: 27, type: 'bs',
+                text: "Diorama menggambarkan suatu pemandangan dalam ukuran kecil (miniatur).",
+                answer: "Benar", hint: "Seperti di museum."
+            },
+            {
+                id: 28, type: 'bs',
+                text: "Bahan keras seperti batu diolah dengan teknik butsir (memijit).",
+                answer: "Salah", hint: "Batu dipahat, tanah liat dibutsir."
+            },
+            {
+                id: 29, type: 'bs',
+                text: "Warna hijau diperoleh dari campuran biru dan kuning.",
+                answer: "Benar", hint: "Campuran warna primer."
+            },
+            {
+                id: 30, type: 'bs',
+                text: "Komodo dan Cendrawasih adalah kekayaan alam Indonesia.",
+                answer: "Benar", hint: "Wajib dilindungi."
+            },
+
+            // --- ISIAN SINGKAT (31-35) ---
+            {
+                id: 31, type: 'isian',
+                text: "Seni merancang bangunan disebut seni...",
+                answer: "Arsitektur", hint: "Ilmu membuat gedung/rumah."
+            },
+            {
+                id: 32, type: 'isian',
+                text: "Seni kerajinan tangan yang mengutamakan fungsi dan keindahan (seperti anyaman/batik) disebut seni...",
+                answer: "Kriya", hint: "Handicraft."
+            },
+            {
+                id: 33, type: 'isian',
+                text: "Karya seni 3 dimensi yang meniru bentuk manusia atau hewan disebut...",
+                answer: "Patung", hint: "Benda tiruan bentuk."
+            },
+            {
+                id: 34, type: 'isian',
+                text: "Sajian pemandangan dalam ukuran kecil yang dilengkapi patung dan objek pendukung disebut...",
+                answer: "Diorama", hint: "Miniatur pemandangan."
+            },
+            {
+                id: 35, type: 'isian',
+                text: "Seni yang menyatu dengan alam atau memanfaatkan lingkungan sebagai media disebut seni...",
+                answer: "Lingkungan", hint: "Environmental Art."
+            },
+
+            // --- URAIAN (36-40) ---
+            {
+                id: 36, type: 'uraian',
+                text: "Jelaskan perbedaan utama antara karya seni rupa 2 Dimensi dan 3 Dimensi!",
+                answer: "2D hanya punya panjang & lebar (dilihat dari depan). 3D punya panjang, lebar, & tinggi/volume (dilihat dari segala arah).", hint: "Bandingkan ukurannya."
+            },
+            {
+                id: 37, type: 'uraian',
+                text: "Tuliskan 3 langkah sederhana membuat model rumah adat dari kardus!",
+                answer: "1. Membuat pola/sketsa pada kardus. 2. Menggunting pola. 3. Menempel/merakit pola dengan lem.", hint: "Gambar, Potong, Tempel."
+            },
+            {
+                id: 38, type: 'uraian',
+                text: "Sebutkan 3 contoh karya seni rupa dua dimensi!",
+                answer: "Lukisan, Poster, Foto, Batik (kain), Kaligrafi", hint: "Benda datar."
+            },
+            {
+                id: 39, type: 'uraian',
+                text: "Sebutkan 3 contoh karya seni rupa tiga dimensi!",
+                answer: "Patung, Vas Bunga, Topeng, Boneka, Meja/Kursi ukir", hint: "Benda bervolume."
+            },
+            {
+                id: 40, type: 'uraian',
+                text: "Sebutkan langkah-langkah dalam membuat diorama flora dan fauna!",
+                answer: "1. Siapkan kotak bekas (alas). 2. Buat latar belakang (langit/gunung). 3. Buat/tempel objek hewan & tumbuhan. 4. Susun dalam kotak.", hint: "Siapkan alas, background, objek."
+            }
+        ];
+
+        const container = document.getElementById('question-container');
+
+        // 1. RENDER SOAL
+        function renderQuestions() {
+            let html = "";
+            questions.forEach((q, index) => {
+                let inputHtml = "";
+                let qNum = index + 1;
+
+                if (q.type === 'pg' || q.type === 'bs') {
+                    // Pilihan Ganda & Benar Salah
+                    let options = q.type === 'bs' ? ["Benar", "Salah"] : q.options;
+                    
+                    options.forEach((opt, i) => {
+                        let val = q.type === 'bs' ? opt : i; 
+                        inputHtml += `
+                            <label class="radio-label">
+                                <input type="radio" name="q${q.id}" value="${val}">
+                                ${q.type === 'pg' ? String.fromCharCode(65+i) + '. ' : ''} ${opt}
+                            </label>
+                        `;
+                    });
+                } 
+                else if (q.type === 'pg_kompleks') {
+                    // Checkbox
+                    q.options.forEach((opt, i) => {
+                        inputHtml += `
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="q${q.id}" value="${i}">
+                                ${opt}
+                            </label>
+                        `;
+                    });
+                }
+                else if (q.type === 'isian') {
+                    // Input Text Pendek
+                    inputHtml = `<input type="text" class="input-text" name="q${q.id}" placeholder="Ketik jawabanmu..." autocomplete="off">`;
+                }
+                else if (q.type === 'uraian') {
+                    // Textarea
+                    inputHtml = `<textarea class="input-area" name="q${q.id}" placeholder="Tulis jawaban lengkapmu di sini..."></textarea>`;
+                }
+
+                html += `
+                    <div class="question-item" id="q-block-${q.id}">
+                        <span class="q-number">Soal No. ${qNum}</span>
+                        ${q.text.includes('<div') ? q.text : `<div class="q-text">${q.text}</div>`}
+                        <div class="options-group">
+                            ${inputHtml}
+                        </div>
+                        <div class="feedback-box" id="feedback-${q.id}"></div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        // 2. FUNGSI SUBMIT & NILAI
+        function submitExam() {
+            let score = 0;
+            let maxScorePG = 0; 
+            
+            questions.forEach(q => {
+                const feedbackEl = document.getElementById(`feedback-${q.id}`);
+                let isCorrect = false;
+                let userAnswer = "-";
+                
+                // --- LOGIKA PENILAIAN ---
+                if (q.type === 'pg' || q.type === 'bs') {
+                    maxScorePG++;
+                    const selected = document.querySelector(`input[name="q${q.id}"]:checked`);
+                    if (selected) {
+                        userAnswer = selected.value;
+                        let valToCheck = q.type === 'pg' ? parseInt(userAnswer) : userAnswer;
+                        if (valToCheck === q.answer) isCorrect = true;
+                    }
+
+                    if (isCorrect) {
+                        score++;
+                        feedbackEl.className = "feedback-box correct";
+                        feedbackEl.innerHTML = `✅ <b>Jawaban Benar!</b>`;
+                    } else {
+                        feedbackEl.className = "feedback-box wrong";
+                        let correctText = (q.type === 'pg') ? q.options[q.answer] : q.answer;
+                        feedbackEl.innerHTML = `❌ <b>Jawaban Kurang Tepat.</b><br>
+                                                <span class="answer-key">Kunci Jawaban: ${correctText}</span>
+                                                <div class="explanation">Hint: ${q.hint}</div>`;
+                    }
+                } 
+                else if (q.type === 'pg_kompleks') {
+                    maxScorePG++;
+                    const checkedBoxes = document.querySelectorAll(`input[name="q${q.id}"]:checked`);
+                    let userIndices = Array.from(checkedBoxes).map(cb => parseInt(cb.value)).sort();
+                    let correctIndices = [...q.answer].sort();
+                    
+                    if (JSON.stringify(userIndices) === JSON.stringify(correctIndices)) {
+                        isCorrect = true;
+                        score++;
+                        feedbackEl.className = "feedback-box correct";
+                        feedbackEl.innerHTML = `✅ <b>Jawaban Benar!</b>`;
+                    } else {
+                        feedbackEl.className = "feedback-box wrong";
+                        let correctText = q.answer.map(idx => "• " + q.options[idx]).join("<br>");
+                        feedbackEl.innerHTML = `❌ <b>Jawaban Kurang Tepat.</b><br>
+                                                <span class="answer-key">Seharusnya memilih:</span><br>${correctText}
+                                                <div class="explanation">Hint: ${q.hint}</div>`;
+                    }
+                }
+                else if (q.type === 'isian' || q.type === 'uraian') {
+                    // Manual Review
+                    const input = document.querySelector(`[name="q${q.id}"]`);
+                    userAnswer = input ? input.value : "";
+                    
+                    feedbackEl.className = "feedback-box manual";
+                    feedbackEl.innerHTML = `📝 <b>Silakan Periksa Mandiri</b><br>
+                                            Jawaban Kamu: <b>${userAnswer || "(Kosong)"}</b><br>
+                                            <span class="answer-key">Kunci Jawaban: ${q.answer}</span>`;
+                }
+
+                feedbackEl.style.display = "block";
+                const inputs = document.querySelectorAll(`[name="q${q.id}"]`);
+                inputs.forEach(inp => inp.disabled = true);
+            });
+
+            // Tampilkan Skor Akhir
+            const scoreBoard = document.getElementById('score-board');
+            const finalScoreEl = document.getElementById('final-score');
+            const finalValue = Math.round((score / maxScorePG) * 100);
+            
+            finalScoreEl.textContent = finalValue;
+            scoreBoard.style.display = "block";
+            document.getElementById('footer-action').style.display = "none";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        renderQuestions();
+    </script>
+</body>
+</html>
